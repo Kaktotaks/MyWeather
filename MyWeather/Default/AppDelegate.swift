@@ -13,11 +13,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        setUpWindow()
+        return true
+    }
+
+    func setUpWindow() {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.backgroundColor = .orange
-        window?.rootViewController = ViewController()
-
-        return true
+        window?.rootViewController = UINavigationController(rootViewController: MainViewController())
     }
 }
