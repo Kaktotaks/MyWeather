@@ -81,7 +81,7 @@ identifier_name:
     warning: 40
     error: 50
   min_length:
-    error: 3
+    error: 1
   excluded:
     - x
     - y
@@ -96,7 +96,7 @@ function_parameter_count:
   error: 10
 
 line_length:
-  warning: 160
+  warning: 130
   error: 180
 
 function_body_length:
