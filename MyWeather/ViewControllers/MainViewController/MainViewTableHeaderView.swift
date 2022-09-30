@@ -119,7 +119,5 @@ final class MainViewTableHeaderView: UIView {
             $0.width.equalTo(60)
             $0.height.equalTo(40)
         }
-
     }
-
 }

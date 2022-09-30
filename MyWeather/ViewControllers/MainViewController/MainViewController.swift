@@ -24,7 +24,7 @@ class MainViewController: UIViewController {
 
     private var headerImageView: UIImageView = {
         let value = UIImageView()
-        value.image = UIImage(named: "noWeather")
+//        value.image = UIImage(named: "noWeather")
         return value
     }()
 
@@ -68,7 +68,7 @@ extension MainViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if !locations.isEmpty, currentLocation == nil {
-            currentLocation = locations.first
+            currentLocation = locations.last
             locationManager.stopUpdatingLocation()
             requestWeatherForLocation()
         }
@@ -79,6 +79,8 @@ extension MainViewController: CLLocationManagerDelegate {
 
         let lat = currentLocation.coordinate.latitude
         let long = currentLocation.coordinate.longitude
+        print(lat)
+        print(long)
 
         let dataURL = "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(long)&units=metric&exclude=minutely,alerts&appid=\(Constants.apiKey)"
 
@@ -127,12 +129,18 @@ extension MainViewController: CLLocationManagerDelegate {
             var currentIconURL = "http://openweathermap.org/img/wn/\(currentIcon ?? "03d")@2x.png"
             debugPrint("2 👀 \(currentIconURL)")
 
-//            self.currentIconURLString = currentIconURL
-            // update user interface
+            // Update user interface after image will be downloaded
             DispatchQueue.main.async {
-                self.headerImageView.kf.setImage(with: URL(string: currentIconURL))
-                self.table.tableHeaderView = self.setUpHeaderView()
-                self.table.reloadData()
+                self.headerImageView.kf.indicatorType = .activity
+                self.headerImageView.kf.setImage(with: URL(string: currentIconURL), placeholder: nil, options: [.transition(.fade(0.5))], progressBlock: nil) { result in
+                    switch result {
+                    case .success(_):
+                        self.table.tableHeaderView = self.setUpHeaderView()
+                        self.table.reloadData()
+                    case .failure(_):
+                        print("failure")
+                    }
+                }
             }
         }).resume()
 
@@ -157,14 +165,13 @@ extension MainViewController: CLLocationManagerDelegate {
             self.localName = json?.first?.localNames?.en
             // update user interface
             DispatchQueue.main.async {
-                self.table.reloadData()
                 self.table.tableHeaderView = self.setUpHeaderView()
-
+                self.table.reloadData()
             }
         }).resume()
     }
 
-    // MARK: - TableViewHeader SetUp
+// MARK: - TableViewHeader SetUp
     private func setUpHeaderView() -> UIView {
         let header = MainViewTableHeaderView(frame: CGRect(
             x: 0,
