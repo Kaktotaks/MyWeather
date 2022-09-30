@@ -9,5 +9,4 @@ import UIKit
 
 class HourlyCollectionViewCell: UICollectionViewCell {
     static let identifier = "HourlyCollectionViewCell"
-    
 }

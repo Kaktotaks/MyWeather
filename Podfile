@@ -4,5 +4,7 @@ target 'MyWeather' do
 
 pod 'SnapKit'
 pod 'Alamofire'
+pod 'Kingfisher'
+
 
 end
