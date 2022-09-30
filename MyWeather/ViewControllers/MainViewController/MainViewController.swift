@@ -31,6 +31,10 @@ class MainViewController: UIViewController {
     private var dailyModel = [Daily]()
     private var currentIconURLString = ""
     private var localName: String?
+    private var currentTemp: String?
+    private var summary: String?
+    private var minTempLabel: String?
+    private var maxTampLabel: String?
 
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
@@ -111,16 +115,19 @@ extension MainViewController: CLLocationManagerDelegate {
             self.dailyModel.append(contentsOf: dailyEntries)
 
             guard let currentEntries = result.current else { return }
-            
+
+            self.currentTemp = "🌡" + String(describing: Int(currentEntries.temp ?? 0.0)) + "°"
+            self.summary = currentEntries.weather?.first?.description
+            self.minTempLabel = "⇣" + String(describing: Int(dailyEntries.first?.temp?.min ?? 0.0)) + "°"
+            self.maxTampLabel = "⇡" + String(describing: Int(dailyEntries.first?.temp?.max ?? 0.0)) + "°"
+
             let currentIcon = currentEntries.weather?.first?.icon
             debugPrint("1 👀 \(currentIcon)")
-            
+
             var currentIconURL = "http://openweathermap.org/img/wn/\(currentIcon ?? "03d")@2x.png"
             debugPrint("2 👀 \(currentIconURL)")
-            
-//            self.currentIconURLString = currentIconURL
-            
 
+//            self.currentIconURLString = currentIconURL
             // update user interface
             DispatchQueue.main.async {
                 self.headerImageView.kf.setImage(with: URL(string: currentIconURL))
@@ -166,12 +173,10 @@ extension MainViewController: CLLocationManagerDelegate {
             height: CGFloat(300)))
 
         header.locationLabel.text = localName
-
-//        debugPrint("3 👀 \(self.currentIconURLString)")
-//        let iconURL = URL(string: currentIconURLString)
-//        debugPrint("4 👀 \(iconURL)")
-//
-//        self.headerImageView.kf.setImage(with: iconURL)
+        header.currentWeatherTempLabel.text = self.currentTemp
+        header.descriptionLabel.text = self.summary
+        header.maxTempLabel.text = self.maxTampLabel
+        header.minTempLabel.text = self.minTempLabel
         header.currentWeatherImageView.image = self.headerImageView.image
         return header
     }

@@ -29,21 +29,35 @@ final class MainViewTableHeaderView: UIView {
         let value = UIImageView()
         value.isUserInteractionEnabled = true
         value.contentMode = .scaleAspectFit
-//        value.image = UIImage(named: "noWeather")
         return value
     }()
 
-    private let summaryLabel: UILabel = {
+    var currentWeatherTempLabel: UILabel = {
+        let value = UILabel()
+        value.textAlignment = .center
+        value.font = Constants.Fonts.mediumFont
+        value.text = "12"
+        return value
+    }()
+
+    let descriptionLabel: UILabel = {
         let value = UILabel()
         value.textAlignment = .center
         value.font = Constants.Fonts.mediumFont
         return value
     }()
 
-    private let tempLabel: UILabel = {
+    let maxTempLabel: UILabel = {
         let value = UILabel()
         value.textAlignment = .center
-        value.font = Constants.Fonts.mediumFont
+        value.font = Constants.Fonts.smallFont
+        return value
+    }()
+
+    let minTempLabel: UILabel = {
+        let value = UILabel()
+        value.textAlignment = .center
+        value.font = Constants.Fonts.smallFont
         return value
     }()
 
@@ -53,8 +67,10 @@ final class MainViewTableHeaderView: UIView {
         addSubview(myBackgroundView)
         myBackgroundView.addSubview(locationLabel)
         myBackgroundView.addSubview(currentWeatherImageView)
-        myBackgroundView.addSubview(summaryLabel)
-        myBackgroundView.addSubview(tempLabel)
+        myBackgroundView.addSubview(currentWeatherTempLabel)
+        myBackgroundView.addSubview(descriptionLabel)
+        myBackgroundView.addSubview(maxTempLabel)
+        myBackgroundView.addSubview(minTempLabel)
 
         setUpConstraintsForHeader()
     }
@@ -72,24 +88,38 @@ final class MainViewTableHeaderView: UIView {
         }
 
         currentWeatherImageView.snp.makeConstraints {
-            $0.topMargin.equalTo(locationLabel).inset(100)
+            $0.topMargin.equalTo(locationLabel).inset(40)
             $0.centerX.equalToSuperview()
             $0.width.height.equalToSuperview().dividedBy(3)
         }
 
-//        summaryLabel.snp.makeConstraints {
-//            $0.
-//            $0.
-//        }
-//
-//        tempLabel.snp.makeConstraints {
-//            $0.
-//            $0.
-//        }
+        currentWeatherTempLabel.snp.makeConstraints {
+            $0.topMargin.equalTo(currentWeatherImageView).inset(60)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalToSuperview().dividedBy(4)
+        }
+
+        descriptionLabel.snp.makeConstraints {
+            $0.topMargin.equalTo(currentWeatherTempLabel).inset(40)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().inset(20)
+            $0.height.equalTo(60)
+        }
+
+        maxTempLabel.snp.makeConstraints {
+            $0.topMargin.equalTo(descriptionLabel).inset(60)
+            $0.centerX.equalToSuperview().offset(-40)
+            $0.width.equalTo(60)
+            $0.height.equalTo(40)
+        }
+
+        minTempLabel.snp.makeConstraints {
+            $0.topMargin.equalTo(descriptionLabel).inset(60)
+            $0.centerX.equalToSuperview().offset(40)
+            $0.width.equalTo(60)
+            $0.height.equalTo(40)
+        }
 
     }
 
-    func configure(with geoModel: [WeatherGeoResponse]?) {
-        self.locationLabel.text = geoModel?.first?.localNames?.en
-    }
 }
