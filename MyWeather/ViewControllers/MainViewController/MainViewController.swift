@@ -24,7 +24,6 @@ class MainViewController: UIViewController {
 
     private var headerImageView: UIImageView = {
         let value = UIImageView()
-//        value.image = UIImage(named: "noWeather")
         return value
     }()
 
@@ -35,6 +34,10 @@ class MainViewController: UIViewController {
     private var summary: String?
     private var minTempLabel: String?
     private var maxTampLabel: String?
+    private var currentDateLabel: String?
+    private var sunriseTimeLabel: String?
+    private var sunsetTimeLabel: String?
+    private var humidityLabel: String?
 
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
@@ -55,7 +58,6 @@ class MainViewController: UIViewController {
         table.snp.makeConstraints {
             $0.leftMargin.rightMargin.bottomMargin.topMargin.equalToSuperview()
         }
-//        self.table.tableHeaderView = self.setUpHeaderView()
     }
 }
 // MARK: - Location SetUp
@@ -114,20 +116,31 @@ extension MainViewController: CLLocationManagerDelegate {
 
             guard let dailyEntries = result.daily else { return }
 
-            self.dailyModel.append(contentsOf: dailyEntries)
-
             guard let currentEntries = result.current else { return }
+
+            self.dailyModel.append(contentsOf: dailyEntries)
 
             self.currentTemp = "🌡" + String(describing: Int(currentEntries.temp ?? 0.0)) + "°"
             self.summary = currentEntries.weather?.first?.description
             self.minTempLabel = "⇣" + String(describing: Int(dailyEntries.first?.temp?.min ?? 0.0)) + "°"
             self.maxTampLabel = "⇡" + String(describing: Int(dailyEntries.first?.temp?.max ?? 0.0)) + "°"
+            self.currentDateLabel = DateFormaterManager.shared.formatDate(
+                date: Date(timeIntervalSince1970: Double(currentEntries.dt ?? 0)),
+                dateFormat: Constants.DateFormats.date
+            )
+            self.sunsetTimeLabel = "🌙 " + DateFormaterManager.shared.formatDate(
+                date: Date(timeIntervalSince1970: Double(currentEntries.sunset ?? 0)),
+                dateFormat: Constants.DateFormats.hourMinute
+            )
+            self.sunriseTimeLabel = "🌞 " + DateFormaterManager.shared.formatDate(
+                date: Date(timeIntervalSince1970: Double(currentEntries.sunrise ?? 0)),
+                dateFormat: Constants.DateFormats.hourMinute
+            )
+            self.humidityLabel = "💧" + String(describing: Int(currentEntries.humidity ?? Int(0.0))) + "%"
+            
 
             let currentIcon = currentEntries.weather?.first?.icon
-            debugPrint("1 👀 \(currentIcon)")
-
             var currentIconURL = "http://openweathermap.org/img/wn/\(currentIcon ?? "03d")@2x.png"
-            debugPrint("2 👀 \(currentIconURL)")
 
             // Update user interface after image will be downloaded
             DispatchQueue.main.async {
@@ -185,6 +198,10 @@ extension MainViewController: CLLocationManagerDelegate {
         header.maxTempLabel.text = self.maxTampLabel
         header.minTempLabel.text = self.minTempLabel
         header.currentWeatherImageView.image = self.headerImageView.image
+        header.currentDateLabel.text = self.currentDateLabel
+        header.sunriseTimeLabel.text = self.sunriseTimeLabel
+        header.sunsetTimeLabel.text = self.sunsetTimeLabel
+        header.humidityLabel.text = self.humidityLabel
         return header
     }
 }
@@ -206,6 +223,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         cell.configure(with: dailyModel[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
 

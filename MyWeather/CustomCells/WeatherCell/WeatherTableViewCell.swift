@@ -51,7 +51,10 @@ class WeatherTableViewCell: UITableViewCell {
         guard let dateTime = model.dt else { return }
         guard let temp = model.temp else { return }
 
-        self.dayLabel.text = getDayForDate(Date(timeIntervalSince1970: Double(dateTime)))
+        self.dayLabel.text = DateFormaterManager.shared.formatDate(
+            date: Date(timeIntervalSince1970: Double(dateTime)),
+            dateFormat: Constants.DateFormats.day
+        )
         self.lowTempLabel.text = String(describing: Int(temp.min ?? 0)) + "°"
         self.heightTempLabel.text = String(describing: Int(temp.max ?? 0)) + "°"
 
@@ -59,14 +62,6 @@ class WeatherTableViewCell: UITableViewCell {
         let iconURL = URL(string: "http://openweathermap.org/img/wn/\(iconName)@2x.png")
 
         self.iconImageView.kf.setImage(with: iconURL)
-    }
-
-    private func getDayForDate(_ date: Date?) -> String {
-        guard let inputDate = date else { return "" }
-
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE" // Monday
-        return formatter.string(from: inputDate)
     }
 
     override func layoutSubviews() {

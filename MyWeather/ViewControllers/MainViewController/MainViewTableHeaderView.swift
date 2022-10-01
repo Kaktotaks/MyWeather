@@ -61,6 +61,34 @@ final class MainViewTableHeaderView: UIView {
         return value
     }()
 
+    let currentDateLabel: UILabel = {
+        let value = UILabel()
+        value.textAlignment = .center
+        value.font = Constants.Fonts.timeMinFont
+        return value
+    }()
+
+    let sunriseTimeLabel: UILabel = {
+        let value = UILabel()
+        value.textAlignment = .center
+        value.font = Constants.Fonts.timeMinFont
+        return value
+    }()
+
+    let sunsetTimeLabel: UILabel = {
+        let value = UILabel()
+        value.textAlignment = .center
+        value.font = Constants.Fonts.timeMinFont
+        return value
+    }()
+
+    let humidityLabel: UILabel = {
+        let value = UILabel()
+        value.textAlignment = .center
+        value.font = Constants.Fonts.smallFont
+        return value
+    }()
+
     override func layoutSubviews() {
         super.layoutSubviews()
 
@@ -71,6 +99,10 @@ final class MainViewTableHeaderView: UIView {
         myBackgroundView.addSubview(descriptionLabel)
         myBackgroundView.addSubview(maxTempLabel)
         myBackgroundView.addSubview(minTempLabel)
+        myBackgroundView.addSubview(currentDateLabel)
+        myBackgroundView.addSubview(sunriseTimeLabel)
+        myBackgroundView.addSubview(sunsetTimeLabel)
+        myBackgroundView.addSubview(humidityLabel)
 
         setUpConstraintsForHeader()
     }
@@ -83,7 +115,7 @@ final class MainViewTableHeaderView: UIView {
         locationLabel.snp.makeConstraints {
             $0.topMargin.equalToSuperview().inset(20)
             $0.height.equalTo(40)
-            $0.width.equalToSuperview().inset(-40)
+            $0.width.equalTo(160)
             $0.centerX.equalToSuperview()
         }
 
@@ -118,6 +150,34 @@ final class MainViewTableHeaderView: UIView {
             $0.centerX.equalToSuperview().offset(40)
             $0.width.equalTo(60)
             $0.height.equalTo(40)
+        }
+
+        currentDateLabel.snp.makeConstraints {
+            $0.topMargin.leftMargin.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailingMargin.equalTo(locationLabel).inset(160)
+            $0.height.equalTo(40)
+        }
+
+        sunsetTimeLabel.snp.makeConstraints {
+            $0.height.equalTo(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailingMargin.equalTo(maxTempLabel).inset(80)
+            $0.centerY.equalToSuperview().offset(12)
+        }
+
+        sunriseTimeLabel.snp.makeConstraints {
+            $0.height.equalTo(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailingMargin.equalTo(maxTempLabel).inset(80)
+            $0.centerY.equalToSuperview().offset(-12)
+        }
+
+        humidityLabel.snp.makeConstraints {
+            $0.height.equalTo(40)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.leadingMargin.equalTo(minTempLabel).offset(80)
+            $0.centerY.equalToSuperview()
         }
     }
 }

@@ -28,6 +28,7 @@
 		E4F8DA2728E30CA900B1E7A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F8DA2628E30CA900B1E7A1 /* Constants.swift */; };
 		E4FAB5D528E5F49D00E162ED /* LocalNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5D328E5F49D00E162ED /* LocalNames.swift */; };
 		E4FAB5D628E5F49D00E162ED /* WeatherGeoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5D428E5F49D00E162ED /* WeatherGeoResponse.swift */; };
+		E4FAB5DA28E8B19700E162ED /* DateFormaterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5D928E8B19700E162ED /* DateFormaterManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		E4F8DA2628E30CA900B1E7A1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E4FAB5D328E5F49D00E162ED /* LocalNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNames.swift; sourceTree = "<group>"; };
 		E4FAB5D428E5F49D00E162ED /* WeatherGeoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherGeoResponse.swift; sourceTree = "<group>"; };
+		E4FAB5D928E8B19700E162ED /* DateFormaterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormaterManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 		E4BBBBAA28DC5E0100C0EF47 /* MyWeather */ = {
 			isa = PBXGroup;
 			children = (
+				E4FAB5D928E8B19700E162ED /* DateFormaterManager.swift */,
 				E4F8DA2628E30CA900B1E7A1 /* Constants.swift */,
 				E4BBBBFC28DE1F9F00C0EF47 /* NetworkManager */,
 				E4BBBBED28DE114900C0EF47 /* Models */,
@@ -357,6 +360,7 @@
 				E4F8DA2728E30CA900B1E7A1 /* Constants.swift in Sources */,
 				E4BBBBE328DCB2C300C0EF47 /* MapViewController.swift in Sources */,
 				E4BBBBE528DCB2DA00C0EF47 /* SearchViewController.swift in Sources */,
+				E4FAB5DA28E8B19700E162ED /* DateFormaterManager.swift in Sources */,
 				E42D006A28E59F9F0032D580 /* MainViewTableHeaderView.swift in Sources */,
 				E4BBBC0828E2FAF800C0EF47 /* Daily.swift in Sources */,
 				E4FAB5D528E5F49D00E162ED /* LocalNames.swift in Sources */,
