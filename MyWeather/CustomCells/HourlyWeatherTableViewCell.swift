@@ -67,6 +67,6 @@ extension HourlyWeatherTableViewCell: UICollectionViewDelegate, UICollectionView
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        CGSize(width: 80, height: 80)
+        CGSize(width: 60, height: 80)
     }
 }

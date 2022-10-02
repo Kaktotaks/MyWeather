@@ -47,6 +47,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
         setUpTableView()
         setUpLocation()
     }
@@ -59,7 +60,7 @@ class MainViewController: UIViewController {
         table.dataSource = self
 
         table.snp.makeConstraints {
-            $0.leftMargin.rightMargin.bottomMargin.topMargin.equalToSuperview()
+            $0.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
 }

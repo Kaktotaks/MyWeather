@@ -16,7 +16,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         value.contentMode = .scaleAspectFill
         value.image = UIImage(named: "collectionViewCellBackground")
         value.clipsToBounds = true
-        value.layer.cornerRadius = self.contentView.frame.height / 4
+        value.layer.cornerRadius = self.contentView.frame.height / 5
         value.isUserInteractionEnabled = true
         value.translatesAutoresizingMaskIntoConstraints = false
         return value
