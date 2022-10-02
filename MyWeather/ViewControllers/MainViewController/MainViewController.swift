@@ -28,6 +28,8 @@ class MainViewController: UIViewController {
     }()
 
     private var dailyModel = [Daily]()
+    private var hourlyModels = [Hourly]()
+
     private var currentIconURLString = ""
     private var localName: String?
     private var currentTemp: String?
@@ -50,7 +52,8 @@ class MainViewController: UIViewController {
     }
 
     private func setUpTableView() {
-        table.register(WeatherTableViewCell.self, forCellReuseIdentifier: WeatherTableViewCell.identifier)
+        table.register(HourlyWeatherTableViewCell.self, forCellReuseIdentifier: HourlyWeatherTableViewCell.identifier)
+        table.register(DailyWeatherTableViewCell.self, forCellReuseIdentifier: DailyWeatherTableViewCell.identifier)
         view.addSubview(table)
         table.delegate = self
         table.dataSource = self
@@ -118,6 +121,10 @@ extension MainViewController: CLLocationManagerDelegate {
 
             guard let currentEntries = result.current else { return }
 
+            guard let hourlyEntries = result.hourly else { return }
+    
+            self.hourlyModels = hourlyEntries
+
             self.dailyModel.append(contentsOf: dailyEntries)
 
             self.currentTemp = "🌡" + String(describing: Int(currentEntries.temp ?? 0.0)) + "°"
@@ -137,7 +144,6 @@ extension MainViewController: CLLocationManagerDelegate {
                 dateFormat: Constants.DateFormats.hourMinute
             )
             self.humidityLabel = "💧" + String(describing: Int(currentEntries.humidity ?? Int(0.0))) + "%"
-            
 
             let currentIcon = currentEntries.weather?.first?.icon
             var currentIconURL = "http://openweathermap.org/img/wn/\(currentIcon ?? "03d")@2x.png"
@@ -145,7 +151,7 @@ extension MainViewController: CLLocationManagerDelegate {
             // Update user interface after image will be downloaded
             DispatchQueue.main.async {
                 self.headerImageView.kf.indicatorType = .activity
-                self.headerImageView.kf.setImage(with: URL(string: currentIconURL), placeholder: nil, options: [.transition(.fade(0.5))], progressBlock: nil) { result in
+                self.headerImageView.kf.setImage(with: URL(string: currentIconURL), placeholder: nil, options: [.transition(.fade(0.3))], progressBlock: nil) { result in
                     switch result {
                     case .success(_):
                         self.table.tableHeaderView = self.setUpHeaderView()
@@ -173,7 +179,6 @@ extension MainViewController: CLLocationManagerDelegate {
             } catch {
                 debugPrint("Error: \(error) while decoding some geo data ❌ ")
             }
-            print(json?.first?.localNames?.en as Any)
 
             self.localName = json?.first?.localNames?.en
             // update user interface
@@ -208,16 +213,38 @@ extension MainViewController: CLLocationManagerDelegate {
 
 // MARK: - TableView SetUp
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dailyModel.count
+        if section == 0 {
+            return 1
+        }
+        return dailyModel.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            guard
+                let cell = table.dequeueReusableCell(
+                    withIdentifier: HourlyWeatherTableViewCell.identifier,
+                    for: indexPath)
+                    as? HourlyWeatherTableViewCell
+            else {
+                return UITableViewCell()
+            }
+
+            cell.configure(with: hourlyModels)
+            cell.selectionStyle = .none
+            return cell
+        }
+
         guard
             let cell = table.dequeueReusableCell(
-                withIdentifier: WeatherTableViewCell.identifier,
+                withIdentifier: DailyWeatherTableViewCell.identifier,
                 for: indexPath)
-                as? WeatherTableViewCell
+                as? DailyWeatherTableViewCell
         else {
             return UITableViewCell()
         }

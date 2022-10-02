@@ -20,6 +20,7 @@ enum Constants {
     }
 
     enum DateFormats {
+        static let hour = "HH"
         static let day = "EEEE"
         static let date = "MMM d"
         static let hourMinute = "HH:mm"

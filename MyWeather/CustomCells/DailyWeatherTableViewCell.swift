@@ -1,5 +1,5 @@
 //
-//  WeatherTableViewCell.swift
+//  DailyWeatherTableViewCell.swift
 //  MyWeather
 //
 //  Created by Леонід Шевченко on 23.09.2022.
@@ -9,8 +9,8 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-class WeatherTableViewCell: UITableViewCell {
-    static let identifier = "WeatherTableViewCell"
+class DailyWeatherTableViewCell: UITableViewCell {
+    static let identifier = "DailyWeatherTableViewCell"
 
     private lazy var dayLabel: UILabel = {
         let value = UILabel()
@@ -58,7 +58,7 @@ class WeatherTableViewCell: UITableViewCell {
         self.lowTempLabel.text = String(describing: Int(temp.min ?? 0)) + "°"
         self.heightTempLabel.text = String(describing: Int(temp.max ?? 0)) + "°"
 
-        let iconName = model.weather?.first?.icon ?? "noWeather"
+        let iconName = model.weather?.first?.icon ?? "01n"
         let iconURL = URL(string: "http://openweathermap.org/img/wn/\(iconName)@2x.png")
 
         self.iconImageView.kf.setImage(with: iconURL)
@@ -70,9 +70,6 @@ class WeatherTableViewCell: UITableViewCell {
         setUpUI()
     }
 
-}
-
-extension WeatherTableViewCell {
     private func setUpUI() {
         contentView.addSubview(myBackgroundView)
         myBackgroundView.addSubview(dayLabel)
@@ -110,5 +107,4 @@ extension WeatherTableViewCell {
             $0.height.equalToSuperview()
         }
     }
-
 }
