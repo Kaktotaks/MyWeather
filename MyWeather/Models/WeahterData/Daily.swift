@@ -17,7 +17,7 @@ struct Daily: Codable {
 	let windGust: Double?
 	let weather: [LocalWeather]?
 	let clouds: Int?
-	let pop: Int?
+//	let pop: Int?
 	let uvi: Double?
 
 	enum CodingKeys: String, CodingKey {
@@ -38,7 +38,7 @@ struct Daily: Codable {
 		case windGust = "wind_gust"
 		case weather = "weather"
 		case clouds = "clouds"
-		case pop = "pop"
+//		case pop = "pop"
 		case uvi = "uvi"
 	}
 
@@ -60,7 +60,7 @@ struct Daily: Codable {
 		windGust = try values.decodeIfPresent(Double.self, forKey: .windGust)
 		weather = try values.decodeIfPresent([LocalWeather].self, forKey: .weather)
 		clouds = try values.decodeIfPresent(Int.self, forKey: .clouds)
-		pop = try values.decodeIfPresent(Int.self, forKey: .pop)
+//		pop = try values.decodeIfPresent(Int.self, forKey: .pop)
 		uvi = try values.decodeIfPresent(Double.self, forKey: .uvi)
 	}
 

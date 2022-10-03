@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
 
     private var dailyModel = [Daily]()
     private var hourlyModels = [Hourly]()
+    lazy var mapImage = UIImage(systemName: "map")
 
     private var currentIconURLString = ""
     private var localName: String?
@@ -43,13 +44,26 @@ class MainViewController: UIViewController {
 
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
+    private let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: mapImage,
+            style: .plain,
+            target: self,
+            action: #selector(goToMapViewController)
+        )
         view.backgroundColor = .systemBackground
         setUpTableView()
         setUpLocation()
+    }
+
+    @objc func goToMapViewController(sender: AnyObject) {
+        let mapVC = UINavigationController(rootViewController: MapViewController())
+        mapVC.modalTransitionStyle = .coverVertical
+        present(mapVC, animated: true)
     }
 
     private func setUpTableView() {
@@ -85,10 +99,13 @@ extension MainViewController: CLLocationManagerDelegate {
 
         let lat = currentLocation.coordinate.latitude
         let long = currentLocation.coordinate.longitude
+        defaults.set(lat, forKey: "lat")
+        defaults.set(long, forKey: "long")
         print(lat)
         print(long)
 
         let dataURL = "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(long)&units=metric&exclude=minutely,alerts&appid=\(Constants.apiKey)"
+        print(dataURL)
 
         let geoURL = "http://api.openweathermap.org/geo/1.0/reverse?lat=\(lat)&lon=\(long)&limit=5&appid=\(Constants.apiKey)"
 
@@ -237,6 +254,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             }
 
             cell.configure(with: hourlyModels)
+            cell.selectionStyle = .none
+            return cell
+        }
+        
+        if indexPath.section == 7 {
+                let cell =  UITableViewCell()
             cell.selectionStyle = .none
             return cell
         }

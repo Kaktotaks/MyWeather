@@ -20,8 +20,8 @@ struct NetworkManager {
             let decoder = JSONDecoder()
 
             if let data = try? decoder.decode(WeatherResponse.self, from: responce.data ?? Data()) {
-                let daily = data.daily ?? []
-                completion(daily)
+//                let daily = data.daily ?? []
+//                completion(daily)
             }
         }
     }
