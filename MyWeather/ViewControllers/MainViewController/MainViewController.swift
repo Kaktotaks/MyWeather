@@ -15,7 +15,7 @@ import Kingfisher
 // API / request to get the data
 
 class MainViewController: UIViewController {
-    private let table: UITableView = {
+    let table: UITableView = {
         let value = UITableView()
         value.separatorStyle = .none
         value.translatesAutoresizingMaskIntoConstraints = false
@@ -46,8 +46,13 @@ class MainViewController: UIViewController {
     private var currentLocation: CLLocation?
     private let defaults = UserDefaults.standard
 
+    var newLat = Double()
+    var newLong = Double()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        table.reloadData()
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: mapImage,
@@ -58,6 +63,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setUpTableView()
         setUpLocation()
+        requestWeatherForLocation()
     }
 
     @objc func goToMapViewController(sender: AnyObject) {
@@ -94,13 +100,22 @@ extension MainViewController: CLLocationManagerDelegate {
         }
     }
 
-    private func requestWeatherForLocation() {
-        guard let currentLocation = currentLocation else { return }
+    func requestWeatherForLocation() {
+        var lat = Double()
+        var long = Double()
 
-        let lat = currentLocation.coordinate.latitude
-        let long = currentLocation.coordinate.longitude
-        defaults.set(lat, forKey: "lat")
-        defaults.set(long, forKey: "long")
+        if newLat != 0.0 && newLong != 0.0 {
+            lat = newLat
+            long = newLong
+        } else {
+            guard let currentLocation = currentLocation else { return }
+
+            lat = currentLocation.coordinate.latitude
+            long = currentLocation.coordinate.longitude
+            defaults.set(lat, forKey: "lat")
+            defaults.set(long, forKey: "long")
+        }
+
         print(lat)
         print(long)
 
@@ -254,12 +269,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             }
 
             cell.configure(with: hourlyModels)
-            cell.selectionStyle = .none
-            return cell
-        }
-        
-        if indexPath.section == 7 {
-                let cell =  UITableViewCell()
             cell.selectionStyle = .none
             return cell
         }

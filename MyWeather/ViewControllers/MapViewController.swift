@@ -57,6 +57,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
     @objc func pickLocation(_ sender: Any?) {
         print("New location picked: \(String(describing: coordinates.last ?? coordinate))")
+        // set new lat and long parametr
+        DispatchQueue.main.async {
+            let mainVC = MainViewController()
+            mainVC.newLat = self.coordinates.last?.latitude ?? 0.0
+            mainVC.newLong = self.coordinates.last?.longitude ?? 0.0
+            mainVC.requestWeatherForLocation()
+            // reload MainVC tableView
+//            mainVC.table.reloadData()
+            // dissMiss current view
+            self.dismiss(animated: true)
+        }
+//        let mainVC = MainViewController()
+//        mainVC.newLat = coordinates.last?.latitude ?? 0.0
+//        mainVC.newLong = coordinates.last?.longitude ?? 0.0
+//        mainVC.requestWeatherForLocation()
+        // reload MainVC tableView
+//        mainVC.table.reloadData()
+        // dissMiss current view
+//        self.dismiss(animated: true)
     }
 
     @objc func lpgrPressed(gestureReconizer: UILongPressGestureRecognizer) {
