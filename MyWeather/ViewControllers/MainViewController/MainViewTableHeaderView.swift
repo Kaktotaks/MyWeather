@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class MainViewTableHeaderView: UIView {
+    // MARK: - Constants and Variables
     private let myBackgroundView: UIImageView = {
         let value = UIImageView()
         value.image = UIImage(named: "mainViewBackground")
@@ -107,6 +108,7 @@ final class MainViewTableHeaderView: UIView {
         setUpConstraintsForHeader()
     }
 
+    // MARK: - functions
     private func setUpConstraintsForHeader() {
         myBackgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(12)

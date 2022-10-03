@@ -11,6 +11,7 @@ import CoreLocation
 import SnapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
+    // MARK: - Constants and Variables
     private let map: MKMapView = {
         let value = MKMapView()
         value.clipsToBounds = true
@@ -54,7 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    // MARK: - functions
     @objc func pickLocation(_ sender: Any?) {
         print("New location picked: \(String(describing: coordinates.last ?? coordinate))")
         // set new lat and long parametr
@@ -63,19 +64,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             mainVC.newLat = self.coordinates.last?.latitude ?? 0.0
             mainVC.newLong = self.coordinates.last?.longitude ?? 0.0
             mainVC.requestWeatherForLocation()
-            // reload MainVC tableView
-//            mainVC.table.reloadData()
-            // dissMiss current view
             self.dismiss(animated: true)
         }
-//        let mainVC = MainViewController()
-//        mainVC.newLat = coordinates.last?.latitude ?? 0.0
-//        mainVC.newLong = coordinates.last?.longitude ?? 0.0
-//        mainVC.requestWeatherForLocation()
-        // reload MainVC tableView
-//        mainVC.table.reloadData()
-        // dissMiss current view
-//        self.dismiss(animated: true)
     }
 
     @objc func lpgrPressed(gestureReconizer: UILongPressGestureRecognizer) {

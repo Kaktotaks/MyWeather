@@ -12,6 +12,7 @@ import SnapKit
 class DailyWeatherTableViewCell: UITableViewCell {
     static let identifier = "DailyWeatherTableViewCell"
 
+    // MARK: - Constants and Variables
     private lazy var dayLabel: UILabel = {
         let value = UILabel()
         value.font = Constants.Fonts.smallFont
@@ -47,6 +48,7 @@ class DailyWeatherTableViewCell: UITableViewCell {
         return value
     }()
 
+    // MARK: - functions
     func configure(with model: Daily) {
         guard let dateTime = model.dt else { return }
         guard let temp = model.temp else { return }

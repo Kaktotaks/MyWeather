@@ -8,10 +8,9 @@
 import UIKit
 
 class HourlyWeatherTableViewCell: UITableViewCell {
+    // MARK: - Constants and Variables
     static let identifier = "HourlyWeatherTableViewCell"
-
     private var collectionView: UICollectionView!
-
     private var hourlyModels = [Hourly]()
 
     override func layoutSubviews() {
@@ -26,6 +25,7 @@ class HourlyWeatherTableViewCell: UITableViewCell {
         collectionView?.reloadData()
     }
 
+    // MARK: - functions
     func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal

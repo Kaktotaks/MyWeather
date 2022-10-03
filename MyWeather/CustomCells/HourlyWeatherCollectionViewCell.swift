@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
+    // MARK: - Constants and Variables
     static let identifier = "HourlyWeatherCollectionViewCell"
 
     private lazy var myBackgroundView: UIImageView = {
@@ -43,6 +44,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         return value
     }()
 
+    // MARK: - functions
     func configure(with model: Hourly) {
         guard let hourTime = model.dt else { return }
 

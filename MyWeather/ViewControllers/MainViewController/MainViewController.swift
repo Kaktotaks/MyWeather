@@ -15,6 +15,8 @@ import Kingfisher
 // API / request to get the data
 
 class MainViewController: UIViewController {
+    // MARK: - Constants and Variables
+
     let table: UITableView = {
         let value = UITableView()
         value.separatorStyle = .none
@@ -29,18 +31,17 @@ class MainViewController: UIViewController {
 
     private var dailyModel = [Daily]()
     private var hourlyModels = [Hourly]()
-    lazy var mapImage = UIImage(systemName: "map")
-
-    private var currentIconURLString = ""
-    private var localName: String?
-    private var currentTemp: String?
-    private var summary: String?
-    private var minTempLabel: String?
-    private var maxTampLabel: String?
-    private var currentDateLabel: String?
-    private var sunriseTimeLabel: String?
-    private var sunsetTimeLabel: String?
-    private var humidityLabel: String?
+    private lazy var mapImage = UIImage(systemName: "map")
+    private lazy var currentIconURLString = ""
+    private lazy var localName: String? = ""
+    private lazy var currentTemp: String? = ""
+    private lazy var summary: String? = ""
+    private lazy var minTempLabel: String? = ""
+    private lazy var maxTampLabel: String? = ""
+    private lazy var currentDateLabel: String? = ""
+    private lazy var sunriseTimeLabel: String? = ""
+    private lazy var sunsetTimeLabel: String? = ""
+    private lazy var humidityLabel: String? = ""
 
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
@@ -72,6 +73,7 @@ class MainViewController: UIViewController {
         present(mapVC, animated: true)
     }
 
+    // MARK: - functions
     private func setUpTableView() {
         table.register(HourlyWeatherTableViewCell.self, forCellReuseIdentifier: HourlyWeatherTableViewCell.identifier)
         table.register(DailyWeatherTableViewCell.self, forCellReuseIdentifier: DailyWeatherTableViewCell.identifier)
