@@ -14,7 +14,6 @@
 		E4BBBBB528DC5E0300C0EF47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4BBBBB428DC5E0300C0EF47 /* Assets.xcassets */; };
 		E4BBBBB828DC5E0300C0EF47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BBBBB628DC5E0300C0EF47 /* LaunchScreen.storyboard */; };
 		E4BBBBE328DCB2C300C0EF47 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BBBBE228DCB2C300C0EF47 /* MapViewController.swift */; };
-		E4BBBBE528DCB2DA00C0EF47 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BBBBE428DCB2DA00C0EF47 /* SearchViewController.swift */; };
 		E4BBBBEA28DDBC9200C0EF47 /* DailyWeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BBBBE928DDBC9200C0EF47 /* DailyWeatherTableViewCell.swift */; };
 		E4BBBBEC28DDBCCA00C0EF47 /* HourlyWeatherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BBBBEB28DDBCCA00C0EF47 /* HourlyWeatherTableViewCell.swift */; };
 		E4BBBC0628E2FAF800C0EF47 /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BBBBFF28E2FAF700C0EF47 /* WeatherResponse.swift */; };
@@ -43,7 +42,6 @@
 		E4BBBBB728DC5E0300C0EF47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E4BBBBB928DC5E0300C0EF47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4BBBBE228DCB2C300C0EF47 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		E4BBBBE428DCB2DA00C0EF47 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		E4BBBBE928DDBC9200C0EF47 /* DailyWeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeatherTableViewCell.swift; sourceTree = "<group>"; };
 		E4BBBBEB28DDBCCA00C0EF47 /* HourlyWeatherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherTableViewCell.swift; sourceTree = "<group>"; };
 		E4BBBBFF28E2FAF700C0EF47 /* WeatherResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
@@ -168,7 +166,6 @@
 			children = (
 				E42D006828E59F7B0032D580 /* MainViewController */,
 				E4BBBBE228DCB2C300C0EF47 /* MapViewController.swift */,
-				E4BBBBE428DCB2DA00C0EF47 /* SearchViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -335,7 +332,6 @@
 				E4BBBBB028DC5E0100C0EF47 /* MainViewController.swift in Sources */,
 				E4F8DA2728E30CA900B1E7A1 /* Constants.swift in Sources */,
 				E4BBBBE328DCB2C300C0EF47 /* MapViewController.swift in Sources */,
-				E4BBBBE528DCB2DA00C0EF47 /* SearchViewController.swift in Sources */,
 				E4FAB5DA28E8B19700E162ED /* DateFormaterManager.swift in Sources */,
 				E42D006A28E59F9F0032D580 /* MainViewTableHeaderView.swift in Sources */,
 				E4BBBC0828E2FAF800C0EF47 /* Daily.swift in Sources */,

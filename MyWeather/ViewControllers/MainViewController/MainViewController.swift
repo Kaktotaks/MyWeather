@@ -45,16 +45,16 @@ class MainViewController: UIViewController {
 
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
-    private let defaults = UserDefaults.standard
 
-    var newLat = Double()
-    var newLong = Double()
+    private let mapVC = MapViewController()
+
+    var lat = Double()
+    var long = Double()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        table.reloadData()
-
+        mapVC.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: mapImage,
             style: .plain,
@@ -64,6 +64,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setUpTableView()
         setUpLocation()
+        
         requestWeatherForLocation()
     }
 
@@ -103,21 +104,10 @@ extension MainViewController: CLLocationManagerDelegate {
     }
 
     func requestWeatherForLocation() {
-        var lat = Double()
-        var long = Double()
+        guard let currentLocation = currentLocation else { return }
 
-        if newLat != 0.0 && newLong != 0.0 {
-            lat = newLat
-            long = newLong
-        } else {
-            guard let currentLocation = currentLocation else { return }
-
-            lat = currentLocation.coordinate.latitude
-            long = currentLocation.coordinate.longitude
-            defaults.set(lat, forKey: "lat")
-            defaults.set(long, forKey: "long")
-        }
-
+        lat = currentLocation.coordinate.latitude
+        long = currentLocation.coordinate.longitude
         print(lat)
         print(long)
 
@@ -157,7 +147,7 @@ extension MainViewController: CLLocationManagerDelegate {
             guard let currentEntries = result.current else { return }
 
             guard let hourlyEntries = result.hourly else { return }
-    
+
             self.hourlyModels = hourlyEntries
 
             self.dailyModel.append(contentsOf: dailyEntries)
@@ -302,5 +292,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             cell.layer.transform = CATransform3DIdentity
             cell.alpha = 1.0
         }
+    }
+}
+
+extension MainViewController: MapVCDelegate {
+    func resetLocationDetailInFirstVC() {
+        print("Delegate is working 👀")
     }
 }

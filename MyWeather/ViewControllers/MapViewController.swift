@@ -10,6 +10,10 @@ import MapKit
 import CoreLocation
 import SnapKit
 
+protocol MapVCDelegate: class {
+    func resetLocationDetailInFirstVC()
+}
+
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
     // MARK: - Constants and Variables
     private let map: MKMapView = {
@@ -37,6 +41,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     private let defaults = UserDefaults.standard
     var coordinate = CLLocationCoordinate2D()
     var coordinates = [CLLocationCoordinate2D]()
+    
+    var delegate: MapVCDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,13 +65,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     @objc func pickLocation(_ sender: Any?) {
         print("New location picked: \(String(describing: coordinates.last ?? coordinate))")
         // set new lat and long parametr
-        DispatchQueue.main.async {
-            let mainVC = MainViewController()
-            mainVC.newLat = self.coordinates.last?.latitude ?? 0.0
-            mainVC.newLong = self.coordinates.last?.longitude ?? 0.0
-            mainVC.requestWeatherForLocation()
+        lat = coordinates.last?.latitude ?? coordinate.latitude
+        long = coordinates.last?.longitude ?? coordinate.longitude
+
+        delegate?.resetLocationDetailInFirstVC()
             self.dismiss(animated: true)
-        }
     }
 
     @objc func lpgrPressed(gestureReconizer: UILongPressGestureRecognizer) {
