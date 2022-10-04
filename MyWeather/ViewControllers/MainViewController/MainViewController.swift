@@ -296,7 +296,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MainViewController: MapVCDelegate {
-    func resetLocationDetailInFirstVC() {
-        print("Delegate is working 👀")
+    func resetLocationDetailInFirstVC(massage: String) {
+        print(massage)
     }
 }

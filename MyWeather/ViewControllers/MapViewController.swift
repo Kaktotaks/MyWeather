@@ -11,7 +11,7 @@ import CoreLocation
 import SnapKit
 
 protocol MapVCDelegate: class {
-    func resetLocationDetailInFirstVC()
+    func resetLocationDetailInFirstVC(massage: String)
 }
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
@@ -68,7 +68,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         lat = coordinates.last?.latitude ?? coordinate.latitude
         long = coordinates.last?.longitude ?? coordinate.longitude
 
-        delegate?.resetLocationDetailInFirstVC()
+        delegate?.resetLocationDetailInFirstVC(massage: "New location sent thrue delegate - lat:\(lat) + long:\(long)")
             self.dismiss(animated: true)
     }
 
