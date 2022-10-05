@@ -100,7 +100,6 @@ extension MainViewController: CLLocationManagerDelegate {
     }
 
     private func requestWeatherForLocation(lat: Double?, long: Double?) {
-        guard let currentLocation = currentLocation else { return }
         guard let lat = lat else { return }
         guard let long = long else { return }
 
