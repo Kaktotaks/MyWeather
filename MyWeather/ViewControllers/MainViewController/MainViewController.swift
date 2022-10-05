@@ -9,14 +9,8 @@ import UIKit
 import CoreLocation
 import Kingfisher
 
-// Location: CoreLocation
-// tableView
-// Custom cell: collectionView
-// API / request to get the data
-
 class MainViewController: UIViewController {
     // MARK: - Constants and Variables
-
     let table: UITableView = {
         let value = UITableView()
         value.separatorStyle = .none
@@ -47,12 +41,19 @@ class MainViewController: UIViewController {
     private var currentLocation: CLLocation?
     private let defaults = UserDefaults.standard
 
-    var lat = Double()
-    var long = Double()
+    private var lat = Double()
+    private var long = Double()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpUI()
+        setUpTableView()
+        setUpLocation()
+    }
+
+    // MARK: - functions
+    private func setUpUI() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: mapImage,
             style: .plain,
@@ -60,12 +61,8 @@ class MainViewController: UIViewController {
             action: #selector(goToMapViewController)
         )
         view.backgroundColor = .systemBackground
-        setUpTableView()
-        setUpLocation()
-//        requestWeatherForLocation()
     }
 
-    // MARK: - functions
     @objc func goToMapViewController(sender: AnyObject) {
         let mapVC = MapViewController()
         mapVC.delegate = self
@@ -102,7 +99,7 @@ extension MainViewController: CLLocationManagerDelegate {
         }
     }
 
-    func requestWeatherForLocation(lat: Double?, long: Double?) {
+    private func requestWeatherForLocation(lat: Double?, long: Double?) {
         guard let currentLocation = currentLocation else { return }
         guard let lat = lat else { return }
         guard let long = long else { return }

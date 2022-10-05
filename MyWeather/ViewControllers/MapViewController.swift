@@ -28,50 +28,56 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         value.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         value.clipsToBounds = true
         value.layer.cornerRadius = 5
-        value.backgroundColor = UIColor(red: 181/255, green: 213/255, blue: 248/255, alpha: 0.75)
+        value.backgroundColor = Constants.BackgroundsColors.lightBlue
         value.setBackgroundImage(#imageLiteral(resourceName: "checkLocation"), for: .normal)
         value.addTarget(self, action: #selector(pickLocation), for: .touchUpInside)
         value.imageView?.contentMode = .scaleAspectFit
         return value
     }()
 
-    var lat = Double()
-    var long = Double()
+    private var lat = Double()
+    private var long = Double()
 
     private let defaults = UserDefaults.standard
-    var coordinate = CLLocationCoordinate2D()
-    var coordinates = [CLLocationCoordinate2D]()
+    private var coordinate = CLLocationCoordinate2D()
+    private var coordinates = [CLLocationCoordinate2D]()
 
     weak var delegate: MapVCPickedLocationDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Weather by location"
+        initLongPress()
         configureUI()
         configureMap()
-
-        let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(lpgrPressed))
-            longPressGR.minimumPressDuration = 0.5
-            longPressGR.delaysTouchesBegan = true
-            longPressGR.delegate = self
-            self.map.addGestureRecognizer(longPressGR)
-
     }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    // MARK: - functions
-    @objc func pickLocation(_ sender: Any?) {
-        print("New location picked: \(String(describing: coordinates.last ?? coordinate))")
-        // set new lat and long parametr
-        lat = coordinates.last?.latitude ?? coordinate.latitude
-        long = coordinates.last?.longitude ?? coordinate.longitude
 
-        self.delegate?.mapPickedLocation(lat: lat, long: long)
-            self.dismiss(animated: true)
+    // MARK: - functions
+    private func initLongPress() {
+        let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(lpgrPressed))
+        longPressGR.minimumPressDuration = 0.5
+        longPressGR.delaysTouchesBegan = true
+        longPressGR.delegate = self
+        self.map.addGestureRecognizer(longPressGR)
     }
 
+    private func configureUI() {
+        view.addSubview(map)
+        title = "Get weather info by location"
+        map.snp.makeConstraints {
+            $0.width.equalToSuperview().inset(30)
+            $0.height.equalTo(view.frame.size.height / 1.2)
+            $0.centerX.centerY.equalToSuperview()
+        }
+        view.backgroundColor = Constants.BackgroundsColors.lightBlue
+    }
+
+    // MARK: - Map configuration
+    // Configure UILongPressGestureRecognizer
     @objc func lpgrPressed(gestureReconizer: UILongPressGestureRecognizer) {
         if gestureReconizer.state != UIGestureRecognizer.State.ended {
             let touchLocation = gestureReconizer.location(in: map)
@@ -89,7 +95,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
             map.removeAnnotations(map.annotations)
             addCustomPin()
-            coordinates.removeFirst()
             return
         }
         if gestureReconizer.state != UIGestureRecognizer.State.began {
@@ -97,6 +102,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         }
     }
 
+    // Configure cusom Pin
+    private func addCustomPin() {
+        let pin = MKPointAnnotation()
+        pin.coordinate = coordinates.last ?? coordinate
+        pin.title = "Location picked"
+        pin.subtitle = "Tap button to know what's the weather"
+        map.addAnnotation(pin)
+    }
+
+    // Passing new weather location to MainVC
+    @objc func pickLocation(_ sender: Any?) {
+        print("New location picked: \(String(describing: coordinates.last ?? coordinate))")
+        // set new lat and long parametr
+        lat = coordinates.last?.latitude ?? coordinate.latitude
+        long = coordinates.last?.longitude ?? coordinate.longitude
+
+        self.delegate?.mapPickedLocation(lat: lat, long: long)
+            self.dismiss(animated: true)
+    }
+
+// Configure map appearance
     private func configureMap() {
         lat = defaults.double(forKey: "lat")
         long = defaults.double(forKey: "long")
@@ -113,29 +139,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             animated: true)
 
         map.delegate = self
-
         addCustomPin()
     }
 
-    private func addCustomPin() {
-        let pin = MKPointAnnotation()
-        pin.coordinate = coordinates.last ?? coordinate
-        pin.title = "Location picked"
-        pin.subtitle = "Tap button to know what's the weather"
-        map.addAnnotation(pin)
-    }
-
-    private func configureUI() {
-        view.addSubview(map)
-        map.snp.makeConstraints {
-            $0.width.equalToSuperview().inset(30)
-            $0.height.equalTo(view.frame.size.height / 1.2)
-            $0.centerX.centerY.equalToSuperview()
-        }
-        view.backgroundColor = UIColor(red: 181/255, green: 213/255, blue: 248/255, alpha: 0.75)
-    }
-
-    // Map
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard !(annotation is MKUserLocation) else {
             return nil

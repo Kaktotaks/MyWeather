@@ -19,6 +19,10 @@ enum Constants {
         static let largeFont = UIFont.systemFont(ofSize: 26, weight: .bold)
     }
 
+    enum BackgroundsColors {
+        static let lightBlue = UIColor(red: 181/255, green: 213/255, blue: 248/255, alpha: 0.75)
+    }
+
     enum DateFormats {
         static let hour = "HH"
         static let day = "EEEE"
