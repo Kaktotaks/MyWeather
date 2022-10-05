@@ -149,6 +149,10 @@ extension MainViewController: CLLocationManagerDelegate {
 
             self.hourlyModels = hourlyEntries
 
+            if !self.dailyModel.isEmpty {
+                self.dailyModel.removeAll()
+            }
+
             self.dailyModel.append(contentsOf: dailyEntries)
 
             self.currentTemp = "🌡" + String(describing: Int(currentEntries.temp ?? 0.0)) + "°"
@@ -238,7 +242,7 @@ extension MainViewController: CLLocationManagerDelegate {
 // MARK: - TableView SetUp
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        2
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
