@@ -23,6 +23,7 @@ final class MainViewTableHeaderView: UIView {
         let value = UILabel()
         value.textAlignment = .center
         value.font = Constants.Fonts.largeFont
+        value.numberOfLines = 0
         return value
     }()
 
@@ -37,7 +38,6 @@ final class MainViewTableHeaderView: UIView {
         let value = UILabel()
         value.textAlignment = .center
         value.font = Constants.Fonts.mediumFont
-        value.text = "12"
         return value
     }()
 
@@ -115,10 +115,9 @@ final class MainViewTableHeaderView: UIView {
         }
 
         locationLabel.snp.makeConstraints {
-            $0.topMargin.equalToSuperview().inset(20)
-            $0.height.equalTo(40)
-            $0.width.equalTo(160)
-            $0.centerX.equalToSuperview()
+            $0.topMargin.equalToSuperview().inset(6)
+            $0.height.equalTo(60)
+            $0.leftMargin.rightMargin.equalToSuperview()
         }
 
         currentWeatherImageView.snp.makeConstraints {
@@ -155,10 +154,9 @@ final class MainViewTableHeaderView: UIView {
         }
 
         currentDateLabel.snp.makeConstraints {
-            $0.topMargin.leftMargin.equalToSuperview().inset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailingMargin.equalTo(locationLabel).inset(160)
-            $0.height.equalTo(40)
+            $0.bottomMargin.leftMargin.equalToSuperview().inset(20)
+            $0.width.equalTo(60)
+            $0.height.equalTo(30)
         }
 
         sunsetTimeLabel.snp.makeConstraints {

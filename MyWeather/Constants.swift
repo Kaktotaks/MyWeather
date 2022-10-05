@@ -16,7 +16,7 @@ enum Constants {
         static let timeMinFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         static let smallFont = UIFont.systemFont(ofSize: 18, weight: .regular)
         static let mediumFont = UIFont.systemFont(ofSize: 22, weight: .medium)
-        static let largeFont = UIFont.systemFont(ofSize: 30, weight: .bold)
+        static let largeFont = UIFont.systemFont(ofSize: 26, weight: .bold)
     }
 
     enum DateFormats {
