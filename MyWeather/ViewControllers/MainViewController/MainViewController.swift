@@ -45,8 +45,7 @@ class MainViewController: UIViewController {
 
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
-
-    private let mapVC = MapViewController()
+    private let defaults = UserDefaults.standard
 
     var lat = Double()
     var long = Double()
@@ -54,7 +53,6 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        mapVC.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: mapImage,
             style: .plain,
@@ -64,17 +62,18 @@ class MainViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setUpTableView()
         setUpLocation()
-        
-        requestWeatherForLocation()
-    }
-
-    @objc func goToMapViewController(sender: AnyObject) {
-        let mapVC = UINavigationController(rootViewController: MapViewController())
-        mapVC.modalTransitionStyle = .coverVertical
-        present(mapVC, animated: true)
+//        requestWeatherForLocation()
     }
 
     // MARK: - functions
+    @objc func goToMapViewController(sender: AnyObject) {
+        let mapVC = MapViewController()
+        mapVC.delegate = self
+        let navController = UINavigationController(rootViewController: mapVC)
+        navController.modalTransitionStyle = .coverVertical
+        present(navController, animated: true)
+    }
+
     private func setUpTableView() {
         table.register(HourlyWeatherTableViewCell.self, forCellReuseIdentifier: HourlyWeatherTableViewCell.identifier)
         table.register(DailyWeatherTableViewCell.self, forCellReuseIdentifier: DailyWeatherTableViewCell.identifier)
@@ -99,15 +98,19 @@ extension MainViewController: CLLocationManagerDelegate {
         if !locations.isEmpty, currentLocation == nil {
             currentLocation = locations.last
             locationManager.stopUpdatingLocation()
-            requestWeatherForLocation()
+            requestWeatherForLocation(lat: currentLocation?.coordinate.latitude, long: currentLocation?.coordinate.longitude)
         }
     }
 
-    func requestWeatherForLocation() {
+    func requestWeatherForLocation(lat: Double?, long: Double?) {
         guard let currentLocation = currentLocation else { return }
+        guard let lat = lat else { return }
+        guard let long = long else { return }
 
-        lat = currentLocation.coordinate.latitude
-        long = currentLocation.coordinate.longitude
+        self.lat = lat
+        self.long = long
+        defaults.set(lat, forKey: "lat")
+        defaults.set(long, forKey: "long")
         print(lat)
         print(long)
 
@@ -295,8 +298,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MainViewController: MapVCDelegate {
-    func resetLocationDetailInFirstVC(massage: String) {
-        print(massage)
+// MARK: - Protocol Delegate Methods
+extension MainViewController: MapVCPickedLocationDelegate {
+    func mapPickedLocation(lat: Double, long: Double) {
+        debugPrint("Delegate lat - \(lat) 👍🏼, Delegate long - \(long) 👍🏼")
+        requestWeatherForLocation(lat: lat, long: long)
     }
 }

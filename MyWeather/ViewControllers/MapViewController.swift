@@ -10,8 +10,8 @@ import MapKit
 import CoreLocation
 import SnapKit
 
-protocol MapVCDelegate: class {
-    func resetLocationDetailInFirstVC(massage: String)
+protocol MapVCPickedLocationDelegate: AnyObject {
+    func mapPickedLocation(lat: Double, long: Double)
 }
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
@@ -41,8 +41,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     private let defaults = UserDefaults.standard
     var coordinate = CLLocationCoordinate2D()
     var coordinates = [CLLocationCoordinate2D]()
-    
-    var delegate: MapVCDelegate?
+
+    weak var delegate: MapVCPickedLocationDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +68,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         lat = coordinates.last?.latitude ?? coordinate.latitude
         long = coordinates.last?.longitude ?? coordinate.longitude
 
-        delegate?.resetLocationDetailInFirstVC(massage: "New location sent thrue delegate - lat:\(lat) + long:\(long)")
+        self.delegate?.mapPickedLocation(lat: lat, long: long)
             self.dismiss(animated: true)
     }
 
