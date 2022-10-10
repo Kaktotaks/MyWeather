@@ -28,6 +28,9 @@
 		E4FAB5D628E5F49D00E162ED /* WeatherGeoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5D428E5F49D00E162ED /* WeatherGeoResponse.swift */; };
 		E4FAB5DA28E8B19700E162ED /* DateFormaterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5D928E8B19700E162ED /* DateFormaterManager.swift */; };
 		E4FAB5DC28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5DB28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift */; };
+		E4FAB5E328F0613D00E162ED /* LocationNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E228F0613D00E162ED /* LocationNameTableViewCell.swift */; };
+		E4FAB5E528F2ECD500E162ED /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E428F2ECD500E162ED /* APIService.swift */; };
+		E4FAB5E728F4164100E162ED /* ResultLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E628F4164100E162ED /* ResultLocationsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +59,9 @@
 		E4FAB5D428E5F49D00E162ED /* WeatherGeoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherGeoResponse.swift; sourceTree = "<group>"; };
 		E4FAB5D928E8B19700E162ED /* DateFormaterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormaterManager.swift; sourceTree = "<group>"; };
 		E4FAB5DB28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
+		E4FAB5E228F0613D00E162ED /* LocationNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameTableViewCell.swift; sourceTree = "<group>"; };
+		E4FAB5E428F2ECD500E162ED /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		E4FAB5E628F4164100E162ED /* ResultLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultLocationsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +148,7 @@
 			children = (
 				E4FAB5D928E8B19700E162ED /* DateFormaterManager.swift */,
 				E4F8DA2628E30CA900B1E7A1 /* Constants.swift */,
+				E4FAB5E428F2ECD500E162ED /* APIService.swift */,
 				E4BBBBED28DE114900C0EF47 /* Models */,
 				E4BBBBE628DDBC1900C0EF47 /* CustomCells */,
 				E4BBBBC028DC647300C0EF47 /* ViewControllers */,
@@ -166,6 +173,7 @@
 			children = (
 				E42D006828E59F7B0032D580 /* MainViewController */,
 				E4BBBBE228DCB2C300C0EF47 /* MapViewController.swift */,
+				E4FAB5E628F4164100E162ED /* ResultLocationsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -176,6 +184,7 @@
 				E4BBBBE928DDBC9200C0EF47 /* DailyWeatherTableViewCell.swift */,
 				E4BBBBEB28DDBCCA00C0EF47 /* HourlyWeatherTableViewCell.swift */,
 				E4FAB5DB28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift */,
+				E4FAB5E228F0613D00E162ED /* LocationNameTableViewCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -330,6 +339,7 @@
 				E4FAB5D628E5F49D00E162ED /* WeatherGeoResponse.swift in Sources */,
 				E4BBBC0628E2FAF800C0EF47 /* WeatherResponse.swift in Sources */,
 				E4BBBBB028DC5E0100C0EF47 /* MainViewController.swift in Sources */,
+				E4FAB5E528F2ECD500E162ED /* APIService.swift in Sources */,
 				E4F8DA2728E30CA900B1E7A1 /* Constants.swift in Sources */,
 				E4BBBBE328DCB2C300C0EF47 /* MapViewController.swift in Sources */,
 				E4FAB5DA28E8B19700E162ED /* DateFormaterManager.swift in Sources */,
@@ -337,9 +347,11 @@
 				E4BBBC0828E2FAF800C0EF47 /* Daily.swift in Sources */,
 				E4FAB5D528E5F49D00E162ED /* LocalNames.swift in Sources */,
 				E4BBBBAC28DC5E0100C0EF47 /* AppDelegate.swift in Sources */,
+				E4FAB5E328F0613D00E162ED /* LocationNameTableViewCell.swift in Sources */,
 				E4BBBC0C28E2FAF800C0EF47 /* Temp.swift in Sources */,
 				E4BBBC0A28E2FAF800C0EF47 /* Current.swift in Sources */,
 				E4BBBBEC28DDBCCA00C0EF47 /* HourlyWeatherTableViewCell.swift in Sources */,
+				E4FAB5E728F4164100E162ED /* ResultLocationsViewController.swift in Sources */,
 				E4BBBC0728E2FAF800C0EF47 /* FeelsLike.swift in Sources */,
 				E4FAB5DC28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift in Sources */,
 			);

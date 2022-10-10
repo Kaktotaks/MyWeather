@@ -9,6 +9,10 @@ import UIKit
 import CoreLocation
 import Kingfisher
 
+protocol SearchQueryDelegate: AnyObject {
+    func sendSearchQueryText(text: String)
+}
+
 class MainViewController: UIViewController {
     // MARK: - Constants and Variables
     let table: UITableView = {
@@ -23,8 +27,6 @@ class MainViewController: UIViewController {
         return value
     }()
 
-    private var dailyModel = [Daily]()
-    private var hourlyModels = [Hourly]()
     private lazy var mapImage = UIImage(systemName: "map")
     private lazy var currentIconURLString = ""
     private lazy var localName: String? = ""
@@ -44,15 +46,37 @@ class MainViewController: UIViewController {
     private var lat = Double()
     private var long = Double()
 
+    private let searchController = UISearchController(searchResultsController: ResultLocationsViewController())
+    private var isSearchBarEmpty: Bool {
+        searchController.searchBar.text?.isEmpty ?? true
+    }
+    private var isFiltering: Bool {
+        searchController.isActive && !isSearchBarEmpty
+    }
+
+    private var dailyModel = [Daily]()
+    private var hourlyModels = [Hourly]()
+
+    weak var sendSearchQueryTextDelegate: SearchQueryDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUpUI()
         setUpTableView()
         setUpLocation()
+        setUpSerachController()
     }
 
     // MARK: - functions
+    private func setUpSerachController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for location"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+
     private func setUpUI() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: mapImage,
@@ -208,7 +232,8 @@ extension MainViewController: CLLocationManagerDelegate {
                 debugPrint("Error: \(error) while decoding some geo data ❌ ")
             }
 
-            self.localName = json?.first?.localNames?.en
+            self.localName = json?.first?.name
+
             // update user interface
             DispatchQueue.main.async {
                 self.table.tableHeaderView = self.setUpHeaderView()
@@ -249,6 +274,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return 1
         }
+
         return dailyModel.count
     }
 
@@ -303,5 +329,47 @@ extension MainViewController: MapVCPickedLocationDelegate {
     func mapPickedLocation(lat: Double, long: Double) {
         debugPrint("Delegate lat - \(lat) 👍🏼, Delegate long - \(long) 👍🏼")
         requestWeatherForLocation(lat: lat, long: long)
+    }
+}
+
+extension MainViewController: UISearchResultsUpdating {
+  func updateSearchResults(for searchController: UISearchController) {
+//      let searchBar = searchController.searchBar
+//      filterContentForSearchText(searchBar.text ?? "")
+
+      guard
+        let locationQuery = searchController.searchBar.text
+      else {
+          return
+      }
+
+//      print(locationQuery)
+      
+      self.sendSearchQueryTextDelegate?.sendSearchQueryText(text: locationQuery)
+
+//      APIService.shared.getLocationsByName(for: locationQuery.trimmingCharacters(in: .whitespaces)) { locations, error in
+//          if let locations = locations {
+//              self.filteredLocations = locations
+//              DispatchQueue.main.async {
+////                  self.locationTableView.reloadData()
+//              }
+//          }
+//      }
+
+//      if isFiltering == true {
+//          table.isHidden = true
+//          locationTableView.isHidden = false
+//      } else {
+//          locationTableView.isHidden = true
+//          table.isHidden = false
+//      }
+//  }
+
+//    func filterContentForSearchText(_ searchText: String, category: WeatherGeoResponse? = nil) {
+//        filteredLocations = filteredLocations.filter { (location: WeatherGeoResponse) -> Bool in
+//            return location.name?.contains(searchText) ?? true
+//      }
+
+//      table.reloadData()
     }
 }
