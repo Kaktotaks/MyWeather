@@ -25,22 +25,23 @@ class APIService {
             return
         }
 
-        let task = session.dataTask(with: searchURL) { data, response, error in
-            if let error = error {
-                print(error.localizedDescription + "from getLocationsByName task ❌")
-                completion(nil, error)
+        URLSession.shared.dataTask(with: searchURL, completionHandler: { data, response, error in
+            // Validation
+            guard let data = data, error == nil else {
+                debugPrint("Something went wrong ❌")
+                return
+            }
+            
+            // Convert data to model / some object
+            var json: [WeahterSearchResponse]?
+
+            do {
+                json = try JSONDecoder().decode([WeahterSearchResponse].self, from: data)
+                completion(json, nil)
+            } catch {
+                debugPrint("Error: \(error) while decoding some searching data ❌ ")
             }
 
-            if let data = data {
-                do {
-                    let decodedData = try JSONDecoder().decode(WeahterSearchResponse.self, from: data)
-                 //   print(decodedData)
-                    completion([decodedData], nil)
-                } catch {
-                    print(error.localizedDescription + "2 ❌❌" )
-                }
-            }
-        }
-        task.resume()
+        }).resume()
     }
 }

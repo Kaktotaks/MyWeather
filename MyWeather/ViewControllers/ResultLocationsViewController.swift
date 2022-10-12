@@ -10,12 +10,12 @@ import UIKit
 class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
     private let locationTableView: UITableView = {
         let value = UITableView()
-        value.backgroundColor = UIColor(white: 0.3, alpha: 0.8)
+        value.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
         value.translatesAutoresizingMaskIntoConstraints = false
         return value
     }()
 
-    private var filteredLocations = [WeahterSearchResponse]()
+    private var filteredLocations: [WeahterSearchResponse]? = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,9 +44,6 @@ class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
         APIService.shared.getLocationsByName(for: query.trimmingCharacters(in: .whitespaces)) { locations, error in
             if let locations = locations {
                 self.filteredLocations = locations
-                //                self.filteredLocations.append(contentsOf: locations)
-                //                self.filteredLocations = locations.filter { (location: WeahterSearchResponse) -> Bool in
-                //                    return location.name?.contains(query) ?? true
                 DispatchQueue.main.async {
                     self.locationTableView.reloadData()
                 }
@@ -57,13 +54,13 @@ class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
 
 extension ResultLocationsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        filteredLocations?.count ?? 5
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = locationTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = filteredLocations[indexPath.row].name
-
+        cell.textLabel?.text = filteredLocations?[indexPath.row].name
+        cell.backgroundColor = .clear
         return cell
     }
 }
