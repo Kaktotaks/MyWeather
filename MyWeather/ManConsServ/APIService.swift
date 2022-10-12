@@ -31,7 +31,7 @@ class APIService {
                 debugPrint("Something went wrong ❌")
                 return
             }
-            
+
             // Convert data to model / some object
             var json: [WeahterSearchResponse]?
 

@@ -10,12 +10,13 @@ import UIKit
 class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
     private let locationTableView: UITableView = {
         let value = UITableView()
-        value.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
+        value.backgroundColor = .systemBackground.withAlphaComponent(0.7)
         value.translatesAutoresizingMaskIntoConstraints = false
         return value
     }()
 
     private var filteredLocations: [WeahterSearchResponse]? = []
+    private var location: WeahterSearchResponse? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,7 @@ class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
 
     // 🔍
     private func setUpSearchTableView() {
-        locationTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        locationTableView.register(LocationNameTableViewCell.self, forCellReuseIdentifier: LocationNameTableViewCell.identifier)
         view.addSubview(locationTableView)
         locationTableView.delegate = self
         locationTableView.dataSource = self
@@ -58,9 +59,19 @@ extension ResultLocationsViewController: UITableViewDelegate, UITableViewDataSou
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = locationTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = filteredLocations?[indexPath.row].name
+        guard
+            let cell = locationTableView.dequeueReusableCell(
+                withIdentifier: LocationNameTableViewCell.identifier) as? LocationNameTableViewCell
+        else {
+            return UITableViewCell()
+        }
+
+        cell.configureLocationNameTVC(model: filteredLocations?[indexPath.row])
         cell.backgroundColor = .clear
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        80
     }
 }
