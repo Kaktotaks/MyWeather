@@ -17,6 +17,7 @@ struct DateFormaterManager {
 
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
+        formatter.locale = Locale(identifier: "uk_UA")
         return formatter.string(from: inputDate)
     }
 

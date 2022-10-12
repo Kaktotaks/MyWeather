@@ -7,35 +7,50 @@
 
 import UIKit
 
-class ResultLocationsViewController: UIViewController {
+class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
     private let locationTableView: UITableView = {
         let value = UITableView()
+        value.backgroundColor = UIColor(white: 0.3, alpha: 0.8)
         value.translatesAutoresizingMaskIntoConstraints = false
         return value
     }()
 
-    private var searchText: String?
-
-    private var filteredLocations: [WeatherGeoResponse] = [] // Виправити на нову модель
+    private var filteredLocations = [WeahterSearchResponse]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let mainVC = MainViewController()
-        mainVC.sendSearchQueryTextDelegate = self
 
         setUpSearchTableView()
     }
 
     // 🔍
     private func setUpSearchTableView() {
-        locationTableView.register(LocationNameTableViewCell.self, forCellReuseIdentifier: LocationNameTableViewCell.identifier)
+        locationTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(locationTableView)
         locationTableView.delegate = self
         locationTableView.dataSource = self
-
         locationTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        guard
+            let query = searchController.searchBar.text
+        else {
+            return
+        }
+
+        APIService.shared.getLocationsByName(for: query.trimmingCharacters(in: .whitespaces)) { locations, error in
+            if let locations = locations {
+                self.filteredLocations = locations
+                //                self.filteredLocations.append(contentsOf: locations)
+                //                self.filteredLocations = locations.filter { (location: WeahterSearchResponse) -> Bool in
+                //                    return location.name?.contains(query) ?? true
+                DispatchQueue.main.async {
+                    self.locationTableView.reloadData()
+                }
+            }
         }
     }
 }
@@ -46,15 +61,9 @@ extension ResultLocationsViewController: UITableViewDelegate, UITableViewDataSou
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = locationTableView.dequeueReusableCell(withIdentifier: LocationNameTableViewCell.identifier, for: indexPath)
-        cell.textLabel?.text = "Test"
+        let cell = locationTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = filteredLocations[indexPath.row].name
 
         return cell
-    }
-}
-
-extension ResultLocationsViewController: SearchQueryDelegate {
-    func sendSearchQueryText(text: String) {
-        debugPrint("Delegate is working, searching for - \(text) 👍🏼")
     }
 }

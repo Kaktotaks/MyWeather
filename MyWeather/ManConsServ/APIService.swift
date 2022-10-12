@@ -11,7 +11,7 @@ class APIService {
     static var shared = APIService()
     let session = URLSession(configuration: .default)
 
-    func getLocationsByName(for query: String, completion: @escaping([WeatherGeoResponse]?, Error?) -> Void) {
+    func getLocationsByName(for query: String, completion: @escaping([WeahterSearchResponse]?, Error?) -> Void) {
         guard
             let formatedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         else {
@@ -19,13 +19,13 @@ class APIService {
         }
 
         guard
-            let geoURL = URL(string: "http://api.openweathermap.org/geo/1.0/direct?q=\(formatedQuery)&limit=5&appid=\(Constants.apiKey)")
+            let searchURL = URL(string: "http://api.openweathermap.org/geo/1.0/direct?q=\(formatedQuery)&limit=5&appid=\(Constants.apiKey)")
         else {
             debugPrint("Invalid geoURL ❌")
             return
         }
 
-        let task = session.dataTask(with: geoURL) { data, response, error in
+        let task = session.dataTask(with: searchURL) { data, response, error in
             if let error = error {
                 print(error.localizedDescription + "from getLocationsByName task ❌")
                 completion(nil, error)
@@ -33,7 +33,7 @@ class APIService {
 
             if let data = data {
                 do {
-                    let decodedData = try JSONDecoder().decode(WeatherGeoResponse.self, from: data)
+                    let decodedData = try JSONDecoder().decode(WeahterSearchResponse.self, from: data)
                  //   print(decodedData)
                     completion([decodedData], nil)
                 } catch {

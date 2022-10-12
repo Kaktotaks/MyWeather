@@ -9,10 +9,6 @@ import UIKit
 import CoreLocation
 import Kingfisher
 
-protocol SearchQueryDelegate: AnyObject {
-    func sendSearchQueryText(text: String)
-}
-
 class MainViewController: UIViewController {
     // MARK: - Constants and Variables
     let table: UITableView = {
@@ -48,7 +44,9 @@ class MainViewController: UIViewController {
 
     private let searchController = UISearchController(searchResultsController: ResultLocationsViewController())
     private var isSearchBarEmpty: Bool {
-        searchController.searchBar.text?.isEmpty ?? true
+//        searchController.searchBar.text?.isEmpty ?? true
+        guard let text = searchController.searchBar.text else { return false }
+            return text.isEmpty
     }
     private var isFiltering: Bool {
         searchController.isActive && !isSearchBarEmpty
@@ -56,8 +54,6 @@ class MainViewController: UIViewController {
 
     private var dailyModel = [Daily]()
     private var hourlyModels = [Hourly]()
-
-    weak var sendSearchQueryTextDelegate: SearchQueryDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +66,9 @@ class MainViewController: UIViewController {
 
     // MARK: - functions
     private func setUpSerachController() {
-        searchController.searchResultsUpdater = self
+        let resultVC = ResultLocationsViewController()
+        let searchController = UISearchController(searchResultsController: resultVC)
+        searchController.searchResultsUpdater = resultVC
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search for location"
         navigationItem.searchController = searchController
@@ -332,20 +330,18 @@ extension MainViewController: MapVCPickedLocationDelegate {
     }
 }
 
-extension MainViewController: UISearchResultsUpdating {
-  func updateSearchResults(for searchController: UISearchController) {
+//extension MainViewController: UISearchResultsUpdating {
+//  func updateSearchResults(for searchController: UISearchController) {
 //      let searchBar = searchController.searchBar
 //      filterContentForSearchText(searchBar.text ?? "")
 
-      guard
-        let locationQuery = searchController.searchBar.text
-      else {
-          return
-      }
-
+//      guard
+//        let locationQuery = searchController.searchBar.text
+//      else {
+//          return
+//      }
+//
 //      print(locationQuery)
-      
-      self.sendSearchQueryTextDelegate?.sendSearchQueryText(text: locationQuery)
 
 //      APIService.shared.getLocationsByName(for: locationQuery.trimmingCharacters(in: .whitespaces)) { locations, error in
 //          if let locations = locations {
@@ -371,5 +367,5 @@ extension MainViewController: UISearchResultsUpdating {
 //      }
 
 //      table.reloadData()
-    }
-}
+//    }
+//}
