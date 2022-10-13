@@ -42,9 +42,8 @@ class MainViewController: UIViewController {
     private var lat = Double()
     private var long = Double()
 
-    private let searchController = UISearchController(searchResultsController: ResultLocationsViewController())
+    private let searchController = UISearchController(searchResultsController: SearchLocationsViewController())
     private var isSearchBarEmpty: Bool {
-//        searchController.searchBar.text?.isEmpty ?? true
         guard let text = searchController.searchBar.text else { return false }
             return text.isEmpty
     }
@@ -66,13 +65,14 @@ class MainViewController: UIViewController {
 
     // MARK: - functions
     private func setUpSerachController() {
-        let resultVC = ResultLocationsViewController()
+        let resultVC = SearchLocationsViewController()
         let searchController = UISearchController(searchResultsController: resultVC)
         searchController.searchResultsUpdater = resultVC
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search for location"
         navigationItem.searchController = searchController
         definesPresentationContext = true
+        resultVC.delegate = self
     }
 
     private func setUpUI() {
@@ -325,7 +325,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Protocol Delegate Methods
 extension MainViewController: MapVCPickedLocationDelegate {
     func mapPickedLocation(lat: Double, long: Double) {
-        debugPrint("Delegate lat - \(lat) 👍🏼, Delegate long - \(long) 👍🏼")
+        requestWeatherForLocation(lat: lat, long: long)
+    }
+}
+
+extension MainViewController: SearchingLocationPickedDelegate {
+    func searchLocationPicked(lat: Double, long: Double) {
+        debugPrint("SearchDelegate lat - \(lat) 👍🏼, long - \(long) 👍🏼")
         requestWeatherForLocation(lat: lat, long: long)
     }
 }

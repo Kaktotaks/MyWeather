@@ -1,5 +1,5 @@
 //
-//  ResultLocationsViewController.swift
+//  SearchLocationsViewController.swift
 //  MyWeather
 //
 //  Created by Леонід Шевченко on 10.10.2022.
@@ -7,7 +7,11 @@
 
 import UIKit
 
-class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
+protocol SearchingLocationPickedDelegate: AnyObject {
+    func searchLocationPicked(lat: Double, long: Double)
+}
+
+class SearchLocationsViewController: UIViewController, UISearchResultsUpdating {
     private let locationTableView: UITableView = {
         let value = UITableView()
         value.backgroundColor = .systemBackground.withAlphaComponent(0.7)
@@ -16,7 +20,7 @@ class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
     }()
 
     private var filteredLocations: [WeahterSearchResponse]? = []
-    private var location: WeahterSearchResponse? = nil
+    weak var delegate: SearchingLocationPickedDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +28,6 @@ class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
         setUpSearchTableView()
     }
 
-    // 🔍
     private func setUpSearchTableView() {
         locationTableView.register(LocationNameTableViewCell.self, forCellReuseIdentifier: LocationNameTableViewCell.identifier)
         view.addSubview(locationTableView)
@@ -53,7 +56,7 @@ class ResultLocationsViewController: UIViewController, UISearchResultsUpdating {
     }
 }
 
-extension ResultLocationsViewController: UITableViewDelegate, UITableViewDataSource {
+extension SearchLocationsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         filteredLocations?.count ?? 5
     }
@@ -69,6 +72,21 @@ extension ResultLocationsViewController: UITableViewDelegate, UITableViewDataSou
         cell.configureLocationNameTVC(model: filteredLocations?[indexPath.row])
         cell.backgroundColor = .clear
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        guard
+            var lat = filteredLocations?[indexPath.row].lat,
+            var lon = filteredLocations?[indexPath.row].lon
+        else {
+            return
+        }
+        print("lat: \(lat) + lon: \(lon)")
+
+        self.delegate?.searchLocationPicked(lat: lat, long: lon)
+        self.dismiss(animated: true)
+
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

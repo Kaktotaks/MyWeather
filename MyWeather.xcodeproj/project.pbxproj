@@ -30,7 +30,7 @@
 		E4FAB5DC28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5DB28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift */; };
 		E4FAB5E328F0613D00E162ED /* LocationNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E228F0613D00E162ED /* LocationNameTableViewCell.swift */; };
 		E4FAB5E528F2ECD500E162ED /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E428F2ECD500E162ED /* APIService.swift */; };
-		E4FAB5E728F4164100E162ED /* ResultLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E628F4164100E162ED /* ResultLocationsViewController.swift */; };
+		E4FAB5E728F4164100E162ED /* SearchLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5E628F4164100E162ED /* SearchLocationsViewController.swift */; };
 		E4FAB5EC28F59CEB00E162ED /* WeahterSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FAB5EA28F59CEB00E162ED /* WeahterSearchResponse.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +62,7 @@
 		E4FAB5DB28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
 		E4FAB5E228F0613D00E162ED /* LocationNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameTableViewCell.swift; sourceTree = "<group>"; };
 		E4FAB5E428F2ECD500E162ED /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		E4FAB5E628F4164100E162ED /* ResultLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultLocationsViewController.swift; sourceTree = "<group>"; };
+		E4FAB5E628F4164100E162ED /* SearchLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationsViewController.swift; sourceTree = "<group>"; };
 		E4FAB5EA28F59CEB00E162ED /* WeahterSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeahterSearchResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +172,7 @@
 			children = (
 				E42D006828E59F7B0032D580 /* MainViewController */,
 				E4BBBBE228DCB2C300C0EF47 /* MapViewController.swift */,
-				E4FAB5E628F4164100E162ED /* ResultLocationsViewController.swift */,
+				E4FAB5E628F4164100E162ED /* SearchLocationsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -371,7 +371,7 @@
 				E4BBBC0A28E2FAF800C0EF47 /* Current.swift in Sources */,
 				E4FAB5EC28F59CEB00E162ED /* WeahterSearchResponse.swift in Sources */,
 				E4BBBBEC28DDBCCA00C0EF47 /* HourlyWeatherTableViewCell.swift in Sources */,
-				E4FAB5E728F4164100E162ED /* ResultLocationsViewController.swift in Sources */,
+				E4FAB5E728F4164100E162ED /* SearchLocationsViewController.swift in Sources */,
 				E4BBBC0728E2FAF800C0EF47 /* FeelsLike.swift in Sources */,
 				E4FAB5DC28E98D5500E162ED /* HourlyWeatherCollectionViewCell.swift in Sources */,
 			);
