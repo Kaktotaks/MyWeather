@@ -67,7 +67,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
     private func configureUI() {
         view.addSubview(map)
-        title = "Get weather info by location"
+        title = "Tap and hold to pick location"
         map.snp.makeConstraints {
             $0.width.equalToSuperview().inset(30)
             $0.height.equalTo(view.frame.size.height / 1.2)

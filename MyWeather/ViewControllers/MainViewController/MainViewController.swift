@@ -132,112 +132,76 @@ extension MainViewController: CLLocationManagerDelegate {
         print(lat)
         print(long)
 
-        let dataURL = "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(long)&units=metric&exclude=minutely,alerts&appid=\(Constants.apiKey)"
-        print(dataURL)
+        // MARK: - URL weather's data response for getting data for current + hourly + daily objects
+        APIService.shared.getWeatherData(lat: lat, lon: long) { json, error in
+            if let result = json {
 
-        let geoURL = "http://api.openweathermap.org/geo/1.0/reverse?lat=\(lat)&lon=\(long)&limit=5&appid=\(Constants.apiKey)"
+                guard let dailyEntries = result.daily else { return }
 
-        guard
-            let dataUrlString = URL(string: dataURL),
-            let geoURLString = URL(string: geoURL)
-        else {
-            debugPrint("Wrong URL ❌")
-            return
-        }
+                guard let currentEntries = result.current else { return }
 
-        // MARK: - URL data response
-        URLSession.shared.dataTask(with: dataUrlString, completionHandler: { data, response, error in
-            // Validation
-            guard let data = data, error == nil else {
-                debugPrint("Something went wrong ❌")
-                return
-            }
+                guard let hourlyEntries = result.hourly else { return }
 
-            // Convert data to model / some object
-            var json: WeatherResponse?
-            do {
-                json = try JSONDecoder().decode(WeatherResponse.self, from: data)
-            } catch {
-                debugPrint("Error: \(error) while decoding some data ❌ ")
-            }
+                self.hourlyModels = hourlyEntries
 
-            guard let result = json else { return }
+                if !self.dailyModel.isEmpty {
+                    self.dailyModel.removeAll()
+                }
 
-            guard let dailyEntries = result.daily else { return }
+                self.dailyModel.append(contentsOf: dailyEntries)
 
-            guard let currentEntries = result.current else { return }
+                self.currentTemp = "🌡" + String(describing: Int(currentEntries.temp ?? 0.0)) + "°"
+                self.summary = currentEntries.weather?.first?.description
+                self.minTempLabel = "⇣" + String(describing: Int(dailyEntries.first?.temp?.min ?? 0.0)) + "°"
+                self.maxTampLabel = "⇡" + String(describing: Int(dailyEntries.first?.temp?.max ?? 0.0)) + "°"
+                self.currentDateLabel = DateFormaterManager.shared.formatDate(
+                    date: Date(timeIntervalSince1970: Double(currentEntries.dt ?? 0)),
+                    dateFormat: Constants.DateFormats.date
+                )
+                self.sunsetTimeLabel = "🌙 " + DateFormaterManager.shared.formatDate(
+                    date: Date(timeIntervalSince1970: Double(currentEntries.sunset ?? 0)),
+                    dateFormat: Constants.DateFormats.hourMinute
+                )
+                self.sunriseTimeLabel = "🌞 " + DateFormaterManager.shared.formatDate(
+                    date: Date(timeIntervalSince1970: Double(currentEntries.sunrise ?? 0)),
+                    dateFormat: Constants.DateFormats.hourMinute
+                )
+                self.humidityLabel = "💧" + String(describing: Int(currentEntries.humidity ?? Int(0.0))) + "%"
 
-            guard let hourlyEntries = result.hourly else { return }
+                let currentIcon = currentEntries.weather?.first?.icon
+                var currentIconURL = "http://openweathermap.org/img/wn/\(currentIcon ?? "03d")@2x.png"
 
-            self.hourlyModels = hourlyEntries
-
-            if !self.dailyModel.isEmpty {
-                self.dailyModel.removeAll()
-            }
-
-            self.dailyModel.append(contentsOf: dailyEntries)
-
-            self.currentTemp = "🌡" + String(describing: Int(currentEntries.temp ?? 0.0)) + "°"
-            self.summary = currentEntries.weather?.first?.description
-            self.minTempLabel = "⇣" + String(describing: Int(dailyEntries.first?.temp?.min ?? 0.0)) + "°"
-            self.maxTampLabel = "⇡" + String(describing: Int(dailyEntries.first?.temp?.max ?? 0.0)) + "°"
-            self.currentDateLabel = DateFormaterManager.shared.formatDate(
-                date: Date(timeIntervalSince1970: Double(currentEntries.dt ?? 0)),
-                dateFormat: Constants.DateFormats.date
-            )
-            self.sunsetTimeLabel = "🌙 " + DateFormaterManager.shared.formatDate(
-                date: Date(timeIntervalSince1970: Double(currentEntries.sunset ?? 0)),
-                dateFormat: Constants.DateFormats.hourMinute
-            )
-            self.sunriseTimeLabel = "🌞 " + DateFormaterManager.shared.formatDate(
-                date: Date(timeIntervalSince1970: Double(currentEntries.sunrise ?? 0)),
-                dateFormat: Constants.DateFormats.hourMinute
-            )
-            self.humidityLabel = "💧" + String(describing: Int(currentEntries.humidity ?? Int(0.0))) + "%"
-
-            let currentIcon = currentEntries.weather?.first?.icon
-            var currentIconURL = "http://openweathermap.org/img/wn/\(currentIcon ?? "03d")@2x.png"
-
-            // Update user interface after image will be downloaded
-            DispatchQueue.main.async {
-                self.headerImageView.kf.indicatorType = .activity
-                self.headerImageView.kf.setImage(with: URL(string: currentIconURL), placeholder: nil, options: [.transition(.fade(0.3))], progressBlock: nil) { result in
-                    switch result {
-                    case .success(_):
-                        self.table.tableHeaderView = self.setUpHeaderView()
-                        self.table.reloadData()
-                    case .failure(_):
-                        print("failure")
+                // Update user interface after header image will be downloaded
+                DispatchQueue.main.async {
+                    self.headerImageView.kf.indicatorType = .activity
+                    self.headerImageView.kf.setImage(
+                        with: URL(string: currentIconURL),
+                        placeholder: nil,
+                        options: [.transition(.fade(0.5))],
+                        progressBlock: nil) { result in
+                            switch result {
+                            case .success(_):
+                                self.table.tableHeaderView = self.setUpHeaderView()
+                                self.table.reloadData()
+                            case .failure(_):
+                                print("failure")
+                            }
                     }
                 }
             }
-        }).resume()
+        }
 
-        // MARK: - URL geo data response
-        URLSession.shared.dataTask(with: geoURLString, completionHandler: { data, response, error in
-            // Validation
-            guard let data = data, error == nil else {
-                debugPrint("Something went wrong ❌")
-                return
+        // MARK: - URL geo data response for getting location name in headerView
+        APIService.shared.getGeoData(lat: lat, lon: long) { json, error in
+            if let cityNames = json {
+                self.localName = cityNames.first?.name
+
+                DispatchQueue.main.async {
+                    self.table.tableHeaderView = self.setUpHeaderView()
+                    self.table.reloadData()
+                }
             }
-
-            // Convert data to model / some object
-            var json: [WeatherGeoResponse]?
-
-            do {
-                json = try JSONDecoder().decode([WeatherGeoResponse].self, from: data)
-            } catch {
-                debugPrint("Error: \(error) while decoding some geo data ❌ ")
-            }
-
-            self.localName = json?.first?.name
-
-            // update user interface
-            DispatchQueue.main.async {
-                self.table.tableHeaderView = self.setUpHeaderView()
-                self.table.reloadData()
-            }
-        }).resume()
+        }
     }
 
 // MARK: - TableViewHeader SetUp

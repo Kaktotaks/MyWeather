@@ -452,4 +452,3 @@ struct LocalNames: Codable {
     }
 
 }
-// swiftlint: enable all

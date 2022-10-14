@@ -9,16 +9,18 @@ import UIKit
 
 struct DateFormaterManager {
     static let shared = DateFormaterManager()
-
     private init() { }
 
     func formatDate(date: Date?, dateFormat: String) -> String {
-        guard let inputDate = date else { return "" }
+        guard
+            let inputDate = date
+        else {
+            return ""
+        }
 
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
         formatter.locale = Locale(identifier: "uk_UA")
         return formatter.string(from: inputDate)
     }
-
 }

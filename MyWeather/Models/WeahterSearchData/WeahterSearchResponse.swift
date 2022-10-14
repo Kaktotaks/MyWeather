@@ -27,5 +27,4 @@ struct WeahterSearchResponse: Codable {
 		country = try values.decodeIfPresent(String.self, forKey: .country)
 		state = try values.decodeIfPresent(String.self, forKey: .state)
 	}
-
 }

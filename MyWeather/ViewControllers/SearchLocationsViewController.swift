@@ -82,7 +82,6 @@ extension SearchLocationsViewController: UITableViewDelegate, UITableViewDataSou
         else {
             return
         }
-        print("lat: \(lat) + lon: \(lon)")
 
         self.delegate?.searchLocationPicked(lat: lat, long: lon)
         self.dismiss(animated: true)

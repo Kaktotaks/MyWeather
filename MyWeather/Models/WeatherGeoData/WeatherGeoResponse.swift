@@ -9,6 +9,7 @@ struct WeatherGeoResponse: Codable {
     let state: String?
 
     enum CodingKeys: String, CodingKey {
+
         case name = "name"
         case localNames = "local_names"
         case lat = "lat"
