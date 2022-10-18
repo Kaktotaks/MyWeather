@@ -122,6 +122,7 @@ extension MainViewController: CLLocationManagerDelegate {
     }
 
     private func requestWeatherForLocation(lat: Double?, long: Double?) {
+        ActivityIndicatorManager.shared.show()
         guard let lat = lat else { return }
         guard let long = long else { return }
 
@@ -182,6 +183,7 @@ extension MainViewController: CLLocationManagerDelegate {
                             switch result {
                             case .success(_):
                                 self.table.tableHeaderView = self.setUpHeaderView()
+                                ActivityIndicatorManager.shared.hide()
                                 self.table.reloadData()
                             case .failure(_):
                                 print("failure")
