@@ -4,6 +4,7 @@ target 'MyWeather' do
 
 pod 'SnapKit'
 pod 'Kingfisher'
+pod 'lottie-ios'
 
 
 end
