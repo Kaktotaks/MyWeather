@@ -10,8 +10,6 @@ import UIKit
 class ActivityIndicatorManager: UIView {
     static var shared = ActivityIndicatorManager()
 
-    private var spinnerBehavior: UIDynamicItemBehavior?
-    private var animator: UIDynamicAnimator?
     private var imageView: UIImageView?
     private var loaderImageName = ""
 
@@ -22,18 +20,8 @@ class ActivityIndicatorManager: UIView {
         self.frame = UIScreen.main.bounds
         self.isUserInteractionEnabled = true
 //        self.center = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
-    }
+        imageView?.frame = CGRect(x: self.frame.midX - 20, y: self.frame.midY - 20, width: 60, height: 60)
 
-    func setupView() {
-        let theImage = UIImage(named: loaderImageName)
-        imageView = UIImageView(image: theImage)
-//        imageView?.translatesAutoresizingMaskIntoConstraints = false
-        imageView?.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 60, height: 60)
-
-        if let imageView = imageView {
-            self.spinnerBehavior = UIDynamicItemBehavior(items: [imageView])
-        }
-        animator = UIDynamicAnimator(referenceView: self)
     }
 
     func show(with image: String = "loading") {
@@ -52,6 +40,12 @@ class ActivityIndicatorManager: UIView {
         }
     }
 
+    private func setupView() {
+        let theImage = UIImage(named: loaderImageName)
+        imageView = UIImageView(image: theImage)
+
+    }
+
     private func showLoadingActivity() {
         if let imageView = imageView {
             addSubview(imageView)
@@ -61,20 +55,17 @@ class ActivityIndicatorManager: UIView {
     }
 
     private func startAnimation() {
-        guard let imageView = imageView,
-              let spinnerBehavior = spinnerBehavior,
-              let animator = animator else { return }
-        if !animator.behaviors.contains(spinnerBehavior) {
-            spinnerBehavior.addAngularVelocity(5.0, for: imageView)
-            animator.addBehavior(spinnerBehavior)
-        }
+        let rotation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+           rotation.toValue = Double.pi * 2
+           rotation.duration = 5
+           rotation.isCumulative = true
+           rotation.repeatCount = Float.greatestFiniteMagnitude
+        imageView?.layer.add(rotation, forKey: "rotationAnimation")
     }
 
     private func stopAnimation() {
-        animator?.removeAllBehaviors()
         imageView?.removeFromSuperview()
         imageView = nil
         self.removeFromSuperview()
-        UIApplication.shared.endIgnoringInteractionEvents()
     }
 }
