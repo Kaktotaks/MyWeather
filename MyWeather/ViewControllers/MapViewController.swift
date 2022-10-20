@@ -19,7 +19,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     private let map: MKMapView = {
         let value = MKMapView()
         value.clipsToBounds = true
-        value.layer.cornerRadius = 30
+        value.layer.cornerRadius = 15
         return value
     }()
 
@@ -69,9 +69,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         view.addSubview(map)
         title = "Tap and hold to pick location"
         map.snp.makeConstraints {
-            $0.width.equalToSuperview().inset(30)
-            $0.height.equalTo(view.frame.size.height / 1.2)
-            $0.centerX.centerY.equalToSuperview()
+            $0.width.height.equalToSuperview().multipliedBy(0.8)
+            $0.center.equalToSuperview()
         }
         view.backgroundColor = Constants.BackgroundsColors.lightBlue
     }
