@@ -19,7 +19,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     private let map: MKMapView = {
         let value = MKMapView()
         value.clipsToBounds = true
-        value.layer.cornerRadius = 15
         return value
     }()
 
@@ -67,12 +66,51 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
     private func configureUI() {
         view.addSubview(map)
-        title = "Tap and hold to pick location"
+        configureNavigationBar()
+
         map.snp.makeConstraints {
-            $0.width.height.equalToSuperview().multipliedBy(0.8)
-            $0.center.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
-        view.backgroundColor = Constants.BackgroundsColors.lightBlue
+    }
+    
+    private func configureNavigationBar() {
+        title = "Tap and hold to pick location"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "wrench.and.screwdriver"),
+            style: .plain,
+            target: self,
+            action: #selector(menuButtonePressed)
+        )
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "arrow.uturn.left"),
+            style: .plain,
+            target: self,
+            action: #selector(dissmissAction)
+        )
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground.withAlphaComponent(0.8)
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+    }
+
+    @objc func dissmissAction(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+
+    @objc func menuButtonePressed(_ sender: Any) {
+        let mapMenuVC = MapMenuVC()
+
+        mapMenuVC.delegate = self
+        if let sheet = mapMenuVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+        }
+
+        present(mapMenuVC, animated: true)
     }
 
     // MARK: - Map configuration
@@ -160,5 +198,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
         annotationView?.image = UIImage(named: "weatherLocation")
         return annotationView
+    }
+}
+
+extension MapViewController: MapMenuDelegate {
+    func choseMapTypeSegment(forItem segment: Int) {
+        if segment == 0 {
+            map.mapType = .standard
+        } else if segment == 1 {
+            map.mapType = .hybrid
+        }
     }
 }

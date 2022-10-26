@@ -89,7 +89,8 @@ class MainViewController: UIViewController {
         let mapVC = MapViewController()
         mapVC.delegate = self
         let navController = UINavigationController(rootViewController: mapVC)
-        navController.modalTransitionStyle = .coverVertical
+        navController.modalTransitionStyle = .crossDissolve
+        navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
     }
 
