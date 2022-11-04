@@ -20,7 +20,7 @@ enum Constants {
     }
 
     enum BackgroundsColors {
-        static let lightBlue = UIColor(red: 181/255, green: 213/255, blue: 248/255, alpha: 0.75)
+        static let lightBlue = UIColor(red: 181/255, green: 213/255, blue: 248/255, alpha: 0.6)
     }
 
     enum DateFormats {

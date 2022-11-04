@@ -59,6 +59,11 @@ extension HourlyWeatherTableViewCell: UICollectionViewDelegate, UICollectionView
         }
 
         cell.configure(with: hourlyModels[indexPath.row])
+
+        if indexPath.row == 0 {
+            cell.hourLabel.text = "Now"
+        }
+
         return cell
     }
 

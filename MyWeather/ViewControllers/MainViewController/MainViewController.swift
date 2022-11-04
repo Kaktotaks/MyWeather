@@ -183,8 +183,8 @@ extension MainViewController: CLLocationManagerDelegate {
                         progressBlock: nil) { result in
                             switch result {
                             case .success(_):
-                                self.table.tableHeaderView = self.setUpHeaderView()
                                 ActivityIndicatorManager.shared.hide()
+                                self.table.tableHeaderView = self.setUpHeaderView()
                                 self.table.reloadData()
                             case .failure(_):
                                 print("failure")

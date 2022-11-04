@@ -45,7 +45,7 @@ class ActivityIndicatorManager: UIView {
     }
 
     func hide() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {[weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {[weak self] in
             self?.stopAnimation()
         }
     }

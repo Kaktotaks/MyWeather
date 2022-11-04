@@ -1,24 +1,28 @@
 PODS:
   - Kingfisher (7.2.4)
   - lottie-ios (3.3.0)
+  - SkyFloatingLabelTextField (4.0.0)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
   - Kingfisher
   - lottie-ios
+  - SkyFloatingLabelTextField
   - SnapKit
 
 SPEC REPOS:
   trunk:
     - Kingfisher
     - lottie-ios
+    - SkyFloatingLabelTextField
     - SnapKit
 
 SPEC CHECKSUMS:
   Kingfisher: 2457be2121734e69e54a2312ecc0150eb9ae70b3
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
+  SkyFloatingLabelTextField: 79ddc40e4ad59707fedbb48d605417aee48bb78a
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: ad30f537d4e212e11c9aeef8feee5e104f00fc02
+PODFILE CHECKSUM: 2fe764fa7c704eb63638d26d2a793351d60ccfd2
 
 COCOAPODS: 1.11.3

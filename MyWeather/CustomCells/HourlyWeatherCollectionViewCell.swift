@@ -23,7 +23,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         return value
     }()
 
-    private lazy var hourLabel: UILabel = {
+     lazy var hourLabel: UILabel = {
         let value = UILabel()
         value.font = Constants.Fonts.smallFont
         value.textAlignment = .center
