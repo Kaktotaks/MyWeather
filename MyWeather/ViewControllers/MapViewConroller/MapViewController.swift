@@ -22,12 +22,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         return value
     }()
 
+    private let mapSearchVC = MapSearchVC()
+
     private let checkWeatherByLocationButton: UIButton = {
         let value = UIButton()
         value.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
-        value.clipsToBounds = true
-        value.layer.cornerRadius = 5
-        value.backgroundColor = Constants.BackgroundsColors.lightBlue
         value.setBackgroundImage(#imageLiteral(resourceName: "checkLocation"), for: .normal)
         value.addTarget(self, action: #selector(pickLocation), for: .touchUpInside)
         value.imageView?.contentMode = .scaleAspectFit
@@ -45,7 +44,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         initLongPress()
         configureUI()
         configureMap()
@@ -72,14 +71,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             $0.edges.equalToSuperview()
         }
     }
-    
+
     private func configureNavigationBar() {
-        title = "Tap and hold to pick location"
+        title = "Pick location"
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "wrench.and.screwdriver"),
+            image: UIImage(systemName: "magnifyingglass"),
             style: .plain,
             target: self,
-            action: #selector(menuButtonePressed)
+            action: #selector(searchButtonePressed)
         )
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -100,17 +100,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         self.dismiss(animated: true)
     }
 
-    @objc func menuButtonePressed(_ sender: Any) {
-        let mapMenuVC = MapMenuVC()
-
-        mapMenuVC.delegate = self
-        if let sheet = mapMenuVC.sheetPresentationController {
+    @objc func searchButtonePressed(_ sender: Any) {
+        mapSearchVC.delegate = self
+        if let sheet = mapSearchVC.sheetPresentationController {
             sheet.detents = [.medium()]
             sheet.prefersGrabberVisible = true
             sheet.preferredCornerRadius = 20
         }
 
-        present(mapMenuVC, animated: true)
+        present(mapSearchVC, animated: true)
     }
 
     // MARK: - Map configuration
@@ -126,8 +124,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
                 MKCoordinateRegion(
                     center: coordinates.last ?? coordinate,
                     span: MKCoordinateSpan(
-                        latitudeDelta: 0.1,
-                        longitudeDelta: 0.1)),
+                        latitudeDelta: 0.5,
+                        longitudeDelta: 0.5)),
                 animated: true)
 
             map.removeAnnotations(map.annotations)
@@ -171,8 +169,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             MKCoordinateRegion(
                 center: coordinates.last ?? coordinate,
                 span: MKCoordinateSpan(
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1)),
+                    latitudeDelta: 0.5,
+                    longitudeDelta: 0.5)),
             animated: true)
 
         map.delegate = self
@@ -201,12 +199,26 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     }
 }
 
-extension MapViewController: MapMenuDelegate {
-    func choseMapTypeSegment(forItem segment: Int) {
-        if segment == 0 {
-            map.mapType = .standard
-        } else if segment == 1 {
-            map.mapType = .hybrid
+extension MapViewController: MapSearchDelegate {
+    func mapSearchVCLocationPicked(_ vc: MapSearchVC, didSelectLocationWith coordinates: CLLocationCoordinate2D?) {
+
+        guard let coordinates = coordinates else {
+            return
         }
+
+        map.removeAnnotations(map.annotations)
+        self.coordinates.append(coordinates)
+        addCustomPin()
+
+        mapSearchVC.dismiss(animated: true)
+
+        map.setRegion(MKCoordinateRegion(
+            center: coordinates,
+            span: MKCoordinateSpan(
+                latitudeDelta: 0.5,
+                longitudeDelta: 0.5)
+        ),
+                      animated: true
+        )
     }
 }
