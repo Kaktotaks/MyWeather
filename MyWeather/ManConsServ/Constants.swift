@@ -9,8 +9,8 @@ import UIKit
 
 enum Constants {
     static let apiKey = "8c898ee6ea2489277441ec97c87e467d"
-
-    static let apiCityName = "http://api.openweathermap.org/geo/1.0/reverse?lat=51.5098&lon=-0.1180&limit=5&appid={API key}"
+    
+    static let tapAndHoldDescription = "Tap and hold directly on the map to choose location"
 
     enum Fonts {
         static let timeMinFont = UIFont.systemFont(ofSize: 14, weight: .regular)

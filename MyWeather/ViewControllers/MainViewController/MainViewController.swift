@@ -123,7 +123,7 @@ extension MainViewController: CLLocationManagerDelegate {
     }
 
     private func requestWeatherForLocation(lat: Double?, long: Double?) {
-        ActivityIndicatorManager.shared.show()
+        AnimatedViewManager.shared.showIndicator(.weatherLoading)
         guard let lat = lat else { return }
         guard let long = long else { return }
 
@@ -183,7 +183,7 @@ extension MainViewController: CLLocationManagerDelegate {
                         progressBlock: nil) { result in
                             switch result {
                             case .success(_):
-                                ActivityIndicatorManager.shared.hide()
+                                AnimatedViewManager.shared.hide()
                                 self.table.tableHeaderView = self.setUpHeaderView()
                                 self.table.reloadData()
                             case .failure(_):
@@ -298,7 +298,6 @@ extension MainViewController: MapVCPickedLocationDelegate {
 
 extension MainViewController: SearchingLocationPickedDelegate {
     func searchLocationPicked(lat: Double, long: Double) {
-        debugPrint("SearchDelegate lat - \(lat) 👍🏼, long - \(long) 👍🏼")
         requestWeatherForLocation(lat: lat, long: long)
     }
 }

@@ -44,7 +44,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         initLongPress()
         configureUI()
         configureMap()
@@ -75,12 +75,21 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     private func configureNavigationBar() {
         title = "Pick location"
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let searchButton = UIBarButtonItem(
             image: UIImage(systemName: "magnifyingglass"),
             style: .plain,
             target: self,
             action: #selector(searchButtonePressed)
         )
+
+        let infoButton = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(infoButtonePressed)
+        )
+
+        navigationItem.rightBarButtonItems = [searchButton, infoButton]
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "arrow.uturn.left"),
@@ -109,6 +118,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         }
 
         present(mapSearchVC, animated: true)
+    }
+
+    @objc func infoButtonePressed(_ sender: Any) {
+        AnimatedViewManager.shared.showInfoAnimation(.tapAndHold, descriptionText: Constants.tapAndHoldDescription)
     }
 
     // MARK: - Map configuration

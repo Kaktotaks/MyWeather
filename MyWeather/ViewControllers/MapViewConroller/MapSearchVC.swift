@@ -23,14 +23,6 @@ class MapSearchVC: UIViewController {
         return value
     }()
 
-    private lazy var separatorView: UIView = {
-        let value = UIView()
-        value.backgroundColor = Constants.BackgroundsColors.lightBlue
-        value.clipsToBounds = true
-        value.layer.cornerRadius = value.frame.height / 2
-        return value
-    }()
-
     private lazy var locationNameTextField: SkyFloatingLabelTextField = {
         let value = SkyFloatingLabelTextField()
         value.placeholder = "Search location by name"
@@ -75,9 +67,7 @@ class MapSearchVC: UIViewController {
         return value
     }()
 
-    var locations = [Location]()
-
-    private let mapTypeImages: [UIImage?] = [UIImage(named: "standartEarth"), UIImage(named: "hybridEearth")]
+    private var locations = [Location]()
 
     weak var delegate: MapSearchDelegate?
 
@@ -86,13 +76,14 @@ class MapSearchVC: UIViewController {
 
         view.backgroundColor = .secondarySystemBackground.withAlphaComponent(0.8)
         locationNameTextField.delegate = self
+        latitudeTextField.delegate = self
+        longitudeTextField.delegate = self
         locationsTableView.delegate = self
         locationsTableView.dataSource = self
         setupConstraint()
     }
 
     private func setupConstraint() {
-        view.addSubview(separatorView)
         view.addSubview(locationNameTextField)
         view.addSubview(latitudeTextField)
         view.addSubview(longitudeTextField)
@@ -100,7 +91,7 @@ class MapSearchVC: UIViewController {
 
         // TextField settings
         locationNameTextField.snp.makeConstraints {
-            $0.top.equalTo(separatorView).inset(10)
+            $0.top.equalToSuperview().inset(20)
             $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(12)
             $0.height.equalTo(60)
         }
@@ -130,15 +121,44 @@ class MapSearchVC: UIViewController {
 }
 
 extension MapSearchVC: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        longitudeTextField.resignFirstResponder()
-        if let text = locationNameTextField.text, !text.isEmpty {
-            LocationManager.shared.findLocations(with: text) { [weak self] locations in
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let latitudeText = latitudeTextField.text else { return false }
+        guard let longitudeText = longitudeTextField.text else { return false }
+        guard let cityNameText = locationNameTextField.text else { return false }
+
+        if !cityNameText.isEmpty {
+            LocationManager.shared.findLocations(with: cityNameText) { [weak self] locations in
                 DispatchQueue.main.async {
                     self?.locations = locations
                     self?.locationsTableView.reloadData()
                 }
             }
+        }
+
+        if !latitudeText.isEmpty && !longitudeText.isEmpty  {
+            print("Searching by lat and lon ✅")
+
+            LocationManager.shared.findLocationsByCoordinates(
+                lat: Double(latitudeText) ?? 0.0,
+                lon: Double(longitudeText) ?? 0.0) { [weak self] locations in
+                DispatchQueue.main.async {
+                    self?.locations = locations
+                    self?.locationsTableView.reloadData()
+                }
+            }
+        }
+
+        return true
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if locationNameTextField.isHighlighted {
+            latitudeTextField.text?.removeAll()
+            longitudeTextField.text?.removeAll()
+        }
+
+        if latitudeTextField.isHighlighted || longitudeTextField.isHighlighted {
+            locationNameTextField.text?.removeAll()
         }
         return true
     }
@@ -158,10 +178,9 @@ extension MapSearchVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
- 
         // Notify map controller to show pin at selected place
         let coordinate = locations[indexPath.row].coordinates
-        
+
         delegate?.mapSearchVCLocationPicked(self, didSelectLocationWith: coordinate)
     }
 }

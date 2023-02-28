@@ -69,7 +69,7 @@ statement_position:
 legacy_constant: error
 
 type_name:
-  min_length: 3
+  min_length: 2
   max_length:
     warning: 45
     error: 50
